@@ -1,0 +1,164 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #121212;
+  --foreground: #e0e0e0;
+  --primary-color: #bb86fc;
+  --secondary-color: #1f1f1f;
+  --accent-color: #03dac6;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #121212;
+    --foreground: #e0e0e0;
+    --primary-color: #bb86fc;
+    --secondary-color: #1f1f1f;
+    --accent-color: #03dac6;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--accent-color);
+}
+
+button {
+  background-color: var(--primary-color);
+  color: var(--foreground);
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: var(--accent-color);
+}
+
+header {
+  background: var(--primary-color);
+  padding: 1rem;
+}
+
+header nav ul {
+  list-style: none;
+  display: flex;
+  gap: 1rem;
+}
+
+header nav ul li a {
+  color: var(--foreground);
+  font-weight: bold;
+}
+
+footer {
+  background: var(--secondary-color);
+  text-align: center;
+  padding: 1rem;
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+}
+
+/* Form Styles */
+form {
+  background: var(--secondary-color);
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border: 1px solid var(--foreground);
+  border-radius: 4px;
+  background: var(--background);
+  color: var(--foreground);
+}
+
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+/* Card Styles */
+.card {
+  background: var(--secondary-color);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card img {
+  width: 100%;
+  height: auto;
+}
+
+.card-content {
+  padding: 1rem;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: var(--foreground);
+}
+
+.card-description {
+  color: var(--foreground);
+  margin-top: 0.5rem;
+}
+
+/* Modal Styles */
+.modal {
+  background: var(--secondary-color);
+  border-radius: 8px;
+  padding: 2rem;
+  max-width: 600px;
+  width: 100%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.modal-header h2 {
+  margin: 0;
+  color: var(--foreground);
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  color: var(--foreground);
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.modal-close:hover {
+  color: var(--accent-color);
+}
+
+.modal-body {
+  max-height: 60vh;
+  overflow-y: auto;
+  color: var(--foreground);
+}
