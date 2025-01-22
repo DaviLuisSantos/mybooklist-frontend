@@ -8,7 +8,7 @@ const BookCard = ({
     title,
     author,
     cover,
-    category,
+    genre,
     status,
     startDate,
     onSave,
@@ -63,7 +63,7 @@ const BookCard = ({
                         <div className="flex flex-col">
                             <span className="text-gray-400 text-sm">Categoria</span>
                             <span className="inline-block bg-green-700 text-white text-xs font-medium px-2 py-1 rounded-full">
-                                {category}
+                                {genre}
                             </span>
                         </div>
                     </div>
@@ -72,7 +72,7 @@ const BookCard = ({
             <EditBookModal
                 isOpen={isModalOpen}
                 onClose={handleModalClose}
-                book={{ id, title, author, cover, category, status, startDate }} // Passa a descrição para o modal
+                book={{ id, title, author, cover, genre, status, startDate }} // Passa a descrição para o modal
                 onSave={onSave}
             />
         </>

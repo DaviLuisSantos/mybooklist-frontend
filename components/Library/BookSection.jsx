@@ -34,7 +34,7 @@ const BookSection = ({ title, books, onSave }) => {
                             title={book.title}
                             author={book.author}
                             cover={book.cover}
-                            category={book.category}
+                            genre={book.genre}
                             description={book.description} // Adiciona a descrição do livro
                             status={book.status}
                             startDate={book.startDate}

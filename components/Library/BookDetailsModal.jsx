@@ -19,7 +19,7 @@ const BookDetailsModal = ({ isOpen, onClose, selectedBook, status, setStatus, st
                     </div>
                     <div>
                         <label className="text-white">Categoria:</label>
-                        <p className="text-gray-300">{selectedBook.category}</p>
+                        <p className="text-gray-300">{selectedBook.genre}</p>
                     </div>
                     <div>
                         <label className="text-white">Descrição:</label>

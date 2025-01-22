@@ -3,14 +3,14 @@ import { useState, useEffect } from 'react';
 const EditBookModal = ({ isOpen, onClose, book, onSave }) => {
     const [title, setTitle] = useState(book.title);
     const [author, setAuthor] = useState(book.author);
-    const [category, setCategory] = useState(book.category);
+    const [genre, setgenre] = useState(book.genre);
     const [status, setStatus] = useState(book.status);
     const [startDate, setStartDate] = useState(book.startDate);
 
     useEffect(() => {
         setTitle(book.title);
         setAuthor(book.author);
-        setCategory(book.category);
+        setgenre(book.genre);
         setStatus(book.status);
         setStartDate(book.startDate);
     }, [book]);
@@ -20,7 +20,7 @@ const EditBookModal = ({ isOpen, onClose, book, onSave }) => {
             ...book,
             title,
             author,
-            category,
+            genre,
             status,
             startDate,
         };
@@ -58,8 +58,8 @@ const EditBookModal = ({ isOpen, onClose, book, onSave }) => {
                         <label className="text-white">Categoria:</label>
                         <input
                             type="text"
-                            value={category}
-                            onChange={(e) => setCategory(e.target.value)}
+                            value={genre}
+                            onChange={(e) => setgenre(e.target.value)}
                             className="bg-gray-800 text-white p-2 rounded-md w-full"
                         />
                     </div>

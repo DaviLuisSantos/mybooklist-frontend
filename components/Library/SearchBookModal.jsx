@@ -55,8 +55,9 @@ const SearchBookModal = ({ isOpen, onClose, onAddBook }) => {
                     title: data.title,
                     author: data.authors ? data.authors.map(author => author.author.name).join(', ') : 'Autor desconhecido',
                     cover: book.cover_i ? `https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg` : '/images/no-cover.jpg',
-                    category: data.subjects ? data.subjects[0] : 'Não Categorizado',
+                    genre: data.subjects ? data.subjects[0] : 'Não Categorizado',
                     description: data.description ? (typeof data.description === 'string' ? data.description : data.description.value) : 'Sem descrição disponível',
+                    pages: data.number_of_pages || 'Desconhecido', // Adiciona o número de páginas
                 };
             } else if (apiSource === 'amazon') {
                 const data = await fetchBookDetailsFromAmazon(book.url);
@@ -64,16 +65,18 @@ const SearchBookModal = ({ isOpen, onClose, onAddBook }) => {
                     title: book.title,
                     author: book.author,
                     cover: book.cover,
-                    category: data.category,
+                    genre: data.category,
                     description: data.description || 'Sem descrição disponível',
+                    pages: data.pageCount || 'Desconhecido', // Adiciona o número de páginas
                 };
             } else {
                 bookDetails = {
                     title: book.volumeInfo.title,
                     author: book.volumeInfo.authors ? book.volumeInfo.authors.join(', ') : 'Autor desconhecido',
                     cover: book.volumeInfo.imageLinks?.thumbnail || '/images/no-cover.jpg',
-                    category: book.volumeInfo.categories ? book.volumeInfo.categories[0] : 'Não Categorizado',
+                    genre: book.volumeInfo.categories ? book.volumeInfo.categories[0] : 'Não Categorizado',
                     description: book.volumeInfo.description || 'Sem descrição disponível',
+                    pages: book.volumeInfo.pageCount || 'Desconhecido', // Adiciona o número de páginas
                 };
             }
             setSelectedBook(bookDetails);
@@ -82,6 +85,15 @@ const SearchBookModal = ({ isOpen, onClose, onAddBook }) => {
         } finally {
             setLoading(false);
         }
+    };
+
+    const resetModal = () => {
+        setSearchTerm('');
+        setSearchResults([]);
+        setSelectedBook(null);
+        setStatus('Não Iniciado');
+        setStartDate('');
+        setError('');
     };
 
     const handleAddBook = async () => {
@@ -95,8 +107,9 @@ const SearchBookModal = ({ isOpen, onClose, onAddBook }) => {
             try {
                 const response = await createBook(bookDetails);
 
-                if (response.ok) {
+                if (response.status >= 200 && response.status < 300) {
                     onAddBook(bookDetails);
+                    resetModal();
                     onClose();
                 } else {
                     console.error('Erro ao adicionar o livro:', response.statusText);
@@ -113,7 +126,7 @@ const SearchBookModal = ({ isOpen, onClose, onAddBook }) => {
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 sm:p-8">
             <div className="bg-gray-700 rounded-lg p-8 max-w-2xl w-full max-h-full overflow-y-auto relative">
-                <button className="absolute top-2 right-2 text-white text-2xl cursor-pointer rounded-lg" onClick={onClose}>×</button>
+                <button className="absolute top-2 right-2 text-white text-2xl cursor-pointer rounded-lg" onClick={() => { resetModal(); onClose(); }}>×</button>
                 <h2 className="text-2xl font-bold mb-4 text-white">Adicionar Livro</h2>
                 <input
                     type="text"

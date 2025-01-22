@@ -12,7 +12,7 @@ const Library = () => {
             title: "O Príncipe",
             author: "Nicolau Maquiavel",
             cover: "/images/book-cover.png",
-            category: "Philosophy",
+            genre: "Philosophy",
             status: "Completo",
             startDate: "2024-01-01",
         },
@@ -21,7 +21,7 @@ const Library = () => {
             title: "1984",
             author: "George Orwell",
             cover: "/images/1984-book-cover.jpg",
-            category: "Dystopian Fiction",
+            genre: "Dystopian Fiction",
             status: "Completo",
             startDate: "2023-10-01",
         },
@@ -30,7 +30,7 @@ const Library = () => {
             title: "Dom Casmurro",
             author: "Machado de Assis",
             cover: "/images/dom-casmurro-book-cover.jpg",
-            category: "Romance",
+            genre: "Romance",
             status: "Lendo",
             startDate: "2024-02-01",
         },
@@ -39,7 +39,7 @@ const Library = () => {
             title: "A Metamorfose",
             author: "Franz Kafka",
             cover: "/images/metamorfose-book-cover.png",
-            category: "Absurdism",
+            genre: "Absurdism",
             status: "Não Iniciado",
             startDate: "2024-03-01",
         },
@@ -92,7 +92,7 @@ const Library = () => {
                         <option value="">Selecione</option>
                         <option value="title">Título</option>
                         <option value="author">Autor</option>
-                        <option value="category">Categoria</option>
+                        <option value="genre">Categoria</option>
                         <option value="status">Status</option>
                         <option value="startDate">Data de Início</option>
                     </select>
