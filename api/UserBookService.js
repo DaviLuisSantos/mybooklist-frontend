@@ -2,7 +2,7 @@ import apiClient from './apiClient';
 
 const API_ENDPOINT = 'UserBook';
 
-export const createBook = async (bookDetails) => {
+export const createUserBook = async (bookDetails) => {
     try {
         const response = await apiClient.post(
             `${API_ENDPOINT}`,

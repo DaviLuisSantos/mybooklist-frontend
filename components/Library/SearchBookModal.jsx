@@ -5,6 +5,7 @@ import { searchOpenLibrary, fetchBookDetails } from '../../api/openLibrary';
 import { searchAmazonBooks, fetchBookDetailsFromAmazon } from '../../api/amazonScraper';
 import BookDetailsModal from './BookDetailsModal';
 import { createBook } from '../../api/BookService';
+import { createUserBook } from '../../api/UserBookService';
 
 const SearchBookModal = ({ isOpen, onClose, onAddBook }) => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -106,6 +107,7 @@ const SearchBookModal = ({ isOpen, onClose, onAddBook }) => {
 
             try {
                 const response = await createBook(bookDetails);
+                const response2 = await createUserBook({ bookId: response.data.bookId, status, startDate });
 
                 if (response.status >= 200 && response.status < 300) {
                     onAddBook(bookDetails);
