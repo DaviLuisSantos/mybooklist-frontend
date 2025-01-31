@@ -13,3 +13,13 @@ export const createUserBook = async (bookDetails) => {
         throw error;
     }
 }
+export const getUserBooks = async () => {
+    try {
+        const response = await apiClient.get(
+            `${API_ENDPOINT}`
+        );
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+}

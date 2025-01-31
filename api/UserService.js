@@ -1,6 +1,6 @@
 import apiClient from './apiClient';
 
-const API_ENDPOINT = 'User'; // Substitua pelo seu endpoint da API
+const API_ENDPOINT = 'user'; // Substitua pelo seu endpoint da API
 
 export const login = async (username, password) => {
     try {
