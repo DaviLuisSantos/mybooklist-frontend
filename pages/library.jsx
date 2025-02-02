@@ -1,50 +1,13 @@
 import Head from 'next/head';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import BookCard from '../components/Library/BookCard';
 import AddBookCard from '../components/Library/AddBookCard';
 import BookSection from '../components/Library/BookSection';
 import withAuth from '../withAuth';
+import { BooksContext } from '../contexts/UserBookContext';
 
 const Library = () => {
-    const [books, setBooks] = useState([
-        {
-            id: 1,
-            title: "O Príncipe",
-            author: "Nicolau Maquiavel",
-            cover: "/images/book-cover.png",
-            genre: "Philosophy",
-            status: "Completo",
-            startDate: "2024-01-01",
-        },
-        {
-            id: 2,
-            title: "1984",
-            author: "George Orwell",
-            cover: "/images/1984-book-cover.jpg",
-            genre: "Dystopian Fiction",
-            status: "Completo",
-            startDate: "2023-10-01",
-        },
-        {
-            id: 3,
-            title: "Dom Casmurro",
-            author: "Machado de Assis",
-            cover: "/images/dom-casmurro-book-cover.jpg",
-            genre: "Romance",
-            status: "Lendo",
-            startDate: "2024-02-01",
-        },
-        {
-            id: 4,
-            title: "A Metamorfose",
-            author: "Franz Kafka",
-            cover: "/images/metamorfose-book-cover.png",
-            genre: "Absurdism",
-            status: "Não Iniciado",
-            startDate: "2024-03-01",
-        },
-    ]);
-
+    const { books, setBooks, loading, error } = useContext(BooksContext);
     const [sortBy, setSortBy] = useState('');
 
     const handleSort = (field) => {
@@ -73,6 +36,14 @@ const Library = () => {
         acc[book.status].push(book);
         return acc;
     }, {});
+
+    if (loading) {
+        return <p>Carregando livros...</p>;
+    }
+
+    if (error) {
+        return <p>{error}</p>;
+    }
 
     return (
         <div>

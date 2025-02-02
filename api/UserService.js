@@ -20,7 +20,10 @@ export const createAccount = async (username, password, email) => {
             `${API_ENDPOINT}/register`, // Ajuste o endpoint conforme necessário
             { username, password, email }
         );
-        return response.data;
+        if (response.status >= 200 && response.status < 300) {
+            return true;
+        }
+        return false;
     } catch (error) {
         throw error;
     }

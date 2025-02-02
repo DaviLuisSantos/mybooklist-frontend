@@ -8,19 +8,26 @@ const CreateAccount = ({ isOpen, onClose }) => {
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const [successMessage, setSuccessMessage] = useState('');
     const router = useRouter();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
         setError('');
+        setSuccessMessage('');
 
         try {
             const response = await createAccount(username, password, email);
-            if (response.userId) {
+            if (response) {
+                setSuccessMessage('Conta criada com sucesso! Faça login para acessar a sua conta.');
+                setTimeout(() => {
+                    onClose();
+                }, 2000);
+
                 router.push('/login'); // Redirecione para a página de login após a criação da conta
             }
-            
+
         } catch (error) {
             console.error('Erro ao criar conta:', error);
             setError('Erro ao criar conta. Por favor, tente novamente.');
@@ -79,6 +86,8 @@ const CreateAccount = ({ isOpen, onClose }) => {
                         {loading ? 'Carregando...' : 'Criar Conta'}
                     </button>
                 </form>
+                {error && <p className="text-red-500 mt-4">{error}</p>}
+                {successMessage && <p className="text-green-500 mt-4">{successMessage}</p>}
             </div>
         </div>
     );

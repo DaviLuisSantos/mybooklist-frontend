@@ -78,6 +78,7 @@ const SearchBookModal = ({ isOpen, onClose, onAddBook }) => {
                     genre: book.volumeInfo.categories ? book.volumeInfo.categories[0] : 'Não Categorizado',
                     description: book.volumeInfo.description || 'Sem descrição disponível',
                     pages: book.volumeInfo.pageCount || 'Desconhecido', // Adiciona o número de páginas
+                    isbn: book.volumeInfo.industryIdentifiers ? book.volumeInfo.industryIdentifiers[0].identifier : 'Desconhecido', // Adiciona o ISBN
                 };
             }
             setSelectedBook(bookDetails);

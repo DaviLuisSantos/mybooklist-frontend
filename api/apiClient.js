@@ -14,8 +14,10 @@ apiClient.interceptors.request.use(
         // Adicione tokens de autenticação, se necessário
         if (typeof window !== 'undefined') {
             const token = localStorage.getItem("Authorization");
+            const key = localStorage.getItem("key");
             if (token) {
                 config.headers.Authorization = `Bearer ${token}`;
+                config.headers.key = key;
             }
         }
         return config;

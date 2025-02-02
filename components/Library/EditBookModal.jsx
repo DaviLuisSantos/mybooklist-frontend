@@ -1,18 +1,26 @@
 import { useState, useEffect } from 'react';
 
 const EditBookModal = ({ isOpen, onClose, book, onSave }) => {
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const year = date.getFullYear();
+        return `${year}-${month}-${day}`;
+    };
+
     const [title, setTitle] = useState(book.title);
     const [author, setAuthor] = useState(book.author);
-    const [genre, setgenre] = useState(book.genre);
+    const [genre, setGenre] = useState(book.genre);
     const [status, setStatus] = useState(book.status);
-    const [startDate, setStartDate] = useState(book.startDate);
+    const [startDate, setStartDate] = useState(formatDate(book.startDate));
 
     useEffect(() => {
         setTitle(book.title);
         setAuthor(book.author);
-        setgenre(book.genre);
+        setGenre(book.genre);
         setStatus(book.status);
-        setStartDate(book.startDate);
+        setStartDate(formatDate(book.startDate));
     }, [book]);
 
     const handleSave = () => {
@@ -22,7 +30,7 @@ const EditBookModal = ({ isOpen, onClose, book, onSave }) => {
             author,
             genre,
             status,
-            startDate,
+            startDate: new Date(startDate).toISOString(),
         };
         onSave(updatedBook);
         onClose();
@@ -59,7 +67,7 @@ const EditBookModal = ({ isOpen, onClose, book, onSave }) => {
                         <input
                             type="text"
                             value={genre}
-                            onChange={(e) => setgenre(e.target.value)}
+                            onChange={(e) => setGenre(e.target.value)}
                             className="bg-gray-800 text-white p-2 rounded-md w-full"
                         />
                     </div>

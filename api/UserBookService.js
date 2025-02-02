@@ -1,11 +1,11 @@
 import apiClient from './apiClient';
 
-const API_ENDPOINT = 'UserBook';
+const API_ENDPOINT = 'userBook';
 
 export const createUserBook = async (bookDetails) => {
     try {
         const response = await apiClient.post(
-            `${API_ENDPOINT}`,
+            `${API_ENDPOINT}/create`,
             { ...bookDetails }
         );
         return response;
@@ -15,8 +15,8 @@ export const createUserBook = async (bookDetails) => {
 }
 export const getUserBooks = async () => {
     try {
-        const response = await apiClient.get(
-            `${API_ENDPOINT}`
+        const response = await apiClient.post(
+            `${API_ENDPOINT}/getAll`
         );
         return response.data;
     } catch (error) {

@@ -30,10 +30,11 @@ const Login = () => {
 
             if (data.status === 200) {
                 // Obtenha o token de autenticação, caso o seu backend retorne.
-                const token = data.data.token; // Exemplo do nome da chave do token
+                const { loginReturn } = data.data; // Exemplo do nome da chave do token
                 // Salve o token no localStorage ou em um cookie httpOnly
                 if (typeof window !== 'undefined') {
-                    localStorage.setItem('Authorization', token);
+                    localStorage.setItem('Authorization', loginReturn.token);
+                    localStorage.setItem('key', loginReturn.uuid);
                 }
                 router.push('/library'); // Redirecione para a página da biblioteca
             }
