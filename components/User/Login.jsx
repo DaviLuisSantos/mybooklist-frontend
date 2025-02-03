@@ -1,56 +1,30 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
 import { useRouter } from 'next/router';
-import { login } from '../../api/UserService';
+import { UserContext } from '../../contexts/UserContext';
 import CreateAccount from './CreateAccount';
 import ForgotPassword from './ForgotPassword';
 
 const Login = () => {
+    const { login, loading, error, user } = useContext(UserContext);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState('');
     const [isCreateAccountOpen, setIsCreateAccountOpen] = useState(false);
     const [isForgotPasswordOpen, setIsForgotPasswordOpen] = useState(false);
     const router = useRouter();
 
     useEffect(() => {
-        if (typeof window !== 'undefined') {
-            const token = localStorage.getItem('Authorization');
-
+        if (user) {
+            router.push('/library');
         }
-    }, [router]);
+    }, [user, router]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setLoading(true);
-        setError('');
-
         try {
-            const data = await login(username, password);
-
-            if (data.status === 200) {
-                // Obtenha o token de autenticação, caso o seu backend retorne.
-                const { loginReturn } = data.data; // Exemplo do nome da chave do token
-                // Salve o token no localStorage ou em um cookie httpOnly
-                if (typeof window !== 'undefined') {
-                    localStorage.setItem('Authorization', loginReturn.token);
-                    localStorage.setItem('key', loginReturn.uuid);
-                }
-                router.push('/library'); // Redirecione para a página da biblioteca
-            }
-            else {
-                setError(data.data.message);
-            }
+            await login(username, password);
+            router.push('/library');
         } catch (error) {
-            if (error.status === 401) {
-                setError('Usuário ou senha inválidos.');
-            } else if (error.status === 404) {
-                setError('Usuário não encontrado.');
-            } else {
-                setError('Erro ao fazer login. Por favor, tente novamente.');
-            }
-        } finally {
-            setLoading(false);
+            console.error('Erro ao fazer login:', error);
         }
     };
 

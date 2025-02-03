@@ -1,45 +1,50 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { BooksContext } from '../../contexts/UserBookContext';
+import { useTheme } from 'next-themes';
 
-const EditBookModal = ({ isOpen, onClose, book, onSave }) => {
-    const formatDate = (dateString) => {
-        const date = new Date(dateString);
-        const month = String(date.getMonth() + 1).padStart(2, '0');
-        const day = String(date.getDate()).padStart(2, '0');
-        const year = date.getFullYear();
-        return `${year}-${month}-${day}`;
-    };
+const EditBookModal = ({ isOpen, onClose, book }) => {
+    const { updateBook } = useContext(BooksContext);
+    const { theme } = useTheme();
+    const [title, setTitle] = useState('');
+    const [author, setAuthor] = useState('');
+    const [genre, setGenre] = useState('');
+    const [status, setStatus] = useState('');
+    const [startDate, setStartDate] = useState('');
 
-    const [title, setTitle] = useState(book.title);
-    const [author, setAuthor] = useState(book.author);
-    const [genre, setGenre] = useState(book.genre);
-    const [status, setStatus] = useState(book.status);
-    const [startDate, setStartDate] = useState(formatDate(book.startDate));
 
     useEffect(() => {
-        setTitle(book.title);
-        setAuthor(book.author);
-        setGenre(book.genre);
-        setStatus(book.status);
-        setStartDate(formatDate(book.startDate));
+        if (book) {
+            setTitle(book.title);
+            setAuthor(book.author);
+            setGenre(book.genre);
+            setStatus(book.status);
+            if (book.startDate)
+                setStartDate(new Date(book.startDate).toISOString().split('T')[0]);
+            else
+                setStartDate(null)
+
+        }
     }, [book]);
 
-    const handleSave = () => {
+
+
+    const handleSave = async () => {
         const updatedBook = {
             ...book,
             title,
             author,
             genre,
             status,
-            startDate: new Date(startDate).toISOString(),
+            startDate,
         };
-        onSave(updatedBook);
+        await updateBook(updatedBook);
         onClose();
     };
 
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 sm:p-8">
             <div className="bg-gray-700 rounded-lg p-8 max-w-2xl w-full relative">
                 <button className="absolute top-2 right-2 text-white text-2xl cursor-pointer rounded-lg" onClick={onClose}>×</button>
                 <h2 className="text-2xl font-bold mb-4 text-white">Editar Livro</h2>
@@ -94,7 +99,7 @@ const EditBookModal = ({ isOpen, onClose, book, onSave }) => {
                     </div>
                     <button
                         onClick={handleSave}
-                        className="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-md mt-4"
+                        className="p-2 rounded-md mt-4 bg-blue-600 hover:bg-blue-700 text-white"
                     >
                         Salvar
                     </button>

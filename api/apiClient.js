@@ -27,7 +27,6 @@ apiClient.interceptors.request.use(
     }
 );
 
-/*
 // Interceptor de resposta (opcional)
 apiClient.interceptors.response.use(
     (response) => response,
@@ -35,12 +34,14 @@ apiClient.interceptors.response.use(
         // Lide com erros globais, como redirecionamento ao login
         if (error.response?.status === 401) {
             if (typeof window !== 'undefined' && window.location.pathname !== '/login') {
+                localStorage.removeItem("Authorization");
+                localStorage.removeItem("key");
                 window.location.href = "/login";
             }
         }
         return Promise.reject(error);
     }
 );
-*/
+
 
 export default apiClient;

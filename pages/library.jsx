@@ -1,13 +1,12 @@
 import Head from 'next/head';
 import { useState, useContext } from 'react';
-import BookCard from '../components/Library/BookCard';
 import AddBookCard from '../components/Library/AddBookCard';
 import BookSection from '../components/Library/BookSection';
 import withAuth from '../withAuth';
 import { BooksContext } from '../contexts/UserBookContext';
 
 const Library = () => {
-    const { books, setBooks, loading, error } = useContext(BooksContext);
+    const { books, setBooks, loading, error, updateBook } = useContext(BooksContext);
     const [sortBy, setSortBy] = useState('');
 
     const handleSort = (field) => {
@@ -20,8 +19,9 @@ const Library = () => {
         setBooks(sortedBooks);
     };
 
-    const handleSaveBook = (updatedBook) => {
-        setBooks(books.map(book => book.id === updatedBook.id ? updatedBook : book));
+    const handleSaveBook = async (updatedBook) => {
+        await updateBook(updatedBook);
+        setIsModalOpen(false);
     };
 
     const handleAddBook = (newBook) => {

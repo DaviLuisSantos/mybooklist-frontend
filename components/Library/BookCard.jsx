@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import Image from 'next/image';
-import { useTheme } from 'next-themes';
 import EditBookModal from './EditBookModal';
 
 const BookCard = ({
@@ -13,7 +12,6 @@ const BookCard = ({
     startDate,
     onSave,
 }) => {
-    const { theme } = useTheme();
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const getStatusColor = (status) => {
@@ -29,6 +27,19 @@ const BookCard = ({
         }
     };
 
+    const getStatusTextColor = (status) => {
+        switch (status) {
+            case 'Completo':
+                return 'text-white';
+            case 'Não Iniciado':
+                return 'text-white';
+            case 'Lendo':
+                return 'text-white';
+            default:
+                return 'text-gray-700';
+        }
+    };
+
     const handleModalOpen = () => {
         setIsModalOpen(true);
     };
@@ -40,10 +51,9 @@ const BookCard = ({
     return (
         <>
             <div
-                className="bg-gray-800 text-white rounded-lg shadow-md overflow-hidden flex flex-row sm:flex-col sm:items-center cursor-pointer"
+                className="rounded-lg shadow-md overflow-hidden flex sm:flex-col cursor-pointer transform transition-transform duration-200 hover:scale-105 bg-gray-800 border border-gray-700"
                 onClick={handleModalOpen}
             >
-                {/* Capa do Livro */}
                 <div className="relative w-1/3 h-48 sm:w-full sm:h-40 flex-shrink-0">
                     <Image
                         src={cover}
@@ -51,18 +61,23 @@ const BookCard = ({
                         layout="fill"
                         objectFit="cover"
                     />
-                    <div className={`absolute bottom-2 right-2 text-white text-xs font-medium px-2 py-1 rounded-full ${getStatusColor(status)}`}>
+                    <div
+                        className={`absolute bottom-2 right-2 text-xs font-medium px-2 py-1 rounded-full ${getStatusColor(status)} ${getStatusTextColor(status)}`}
+                    >
                         {status}
                     </div>
                 </div>
-                {/* Informações do Livro */}
-                <div className="p-4 flex flex-col flex-grow text-left sm:text-center">
-                    <h2 className="text-xl font-bold mb-2">{title}</h2>
-                    <p className="text-gray-400 mb-2">{author}</p>
-                    <div className="flex items-center justify-between flex-wrap mb-2">
+
+                <div className="flex flex-col flex-grow p-4 text-left sm:text-center gap-2 text-gray-100">
+                    <h2 className="text-xl font-bold text-gray-50">{title}</h2>
+                    <p className="text-gray-400">{author}</p>
+
+                    <div className="flex justify-between flex-wrap items-center">
                         <div className="flex flex-col">
                             <span className="text-gray-400 text-sm">Categoria</span>
-                            <span className="inline-block bg-green-700 text-white text-xs font-medium px-2 py-1 rounded-full">
+                            <span
+                                className="inline-block px-2 py-1 rounded-full text-xs font-medium bg-green-700 text-white"
+                            >
                                 {genre}
                             </span>
                         </div>
@@ -72,7 +87,7 @@ const BookCard = ({
             <EditBookModal
                 isOpen={isModalOpen}
                 onClose={handleModalClose}
-                book={{ id, title, author, cover, genre, status, startDate }} // Passa a descrição para o modal
+                book={{ id, title, author, cover, genre, status, startDate }}
                 onSave={onSave}
             />
         </>

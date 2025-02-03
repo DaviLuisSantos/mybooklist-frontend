@@ -10,9 +10,10 @@ export const createUserBook = async (bookDetails) => {
         );
         return response;
     } catch (error) {
-        throw error;
+        console.log(error);
     }
 }
+
 export const getUserBooks = async () => {
     try {
         const response = await apiClient.post(
@@ -20,6 +21,18 @@ export const getUserBooks = async () => {
         );
         return response.data;
     } catch (error) {
-        throw error;
+        console.log(error);
+    }
+}
+
+export const updateUserBook = async (bookDetails) => {
+    try {
+        const response = await apiClient.put(
+            `${API_ENDPOINT}/update`,
+            { ...bookDetails }
+        );
+        return response;
+    } catch (error) {
+        console.log(error);
     }
 }

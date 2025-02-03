@@ -10,6 +10,6 @@ export const createBook = async (bookDetails) => {
         );
         return response;
     } catch (error) {
-        throw error;
+        console.log(error);
     }
 };
