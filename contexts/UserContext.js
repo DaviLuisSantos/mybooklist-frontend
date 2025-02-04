@@ -39,7 +39,7 @@ export const UserProvider = ({ children }) => {
 
             const response = await loginUser(username, password);
             const { token, username: user, id } = response.data.loginReturn;
-            setToken(token, id);
+            setToken(token, id, user);
             setUser(user);
             setError(null);
         } catch (error) {

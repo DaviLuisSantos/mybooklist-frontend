@@ -1,14 +1,19 @@
-export const setToken = (token, key) => {
-    localStorage.setItem('Authorization', token);
-    localStorage.setItem('key', key);
+import Cookies from 'js-cookie';
+
+export const setToken = (token, key, user) => {
+    Cookies.set('Authorization', token, { expires: 7 }); // Expira em 7 dias
+    Cookies.set('key', key, { expires: 7 });
+    Cookies.set('user', user, { expires: 7 });
 };
 
 export const getToken = () => {
-    return localStorage.getItem('Authorization');
+    return Cookies.get('Authorization');
 };
 
 export const removeToken = () => {
-    localStorage.removeItem('Authorization');
+    Cookies.remove('Authorization');
+    Cookies.remove('key');
+    Cookies.remove('user');
 };
 
 export const isTokenValid = () => {

@@ -4,6 +4,8 @@ import AddBookCard from '../components/Library/AddBookCard';
 import BookSection from '../components/Library/BookSection';
 import withAuth from '../withAuth';
 import { BooksContext } from '../contexts/UserBookContext';
+import { UserContext } from '../contexts/UserContext';
+import Bar from '../components/Bar';
 
 const Library = () => {
     const { books, setBooks, loading, error, updateBook } = useContext(BooksContext);
@@ -21,7 +23,6 @@ const Library = () => {
 
     const handleSaveBook = async (updatedBook) => {
         await updateBook(updatedBook);
-        setIsModalOpen(false);
     };
 
     const handleAddBook = (newBook) => {
@@ -51,6 +52,7 @@ const Library = () => {
                 <title>Library</title>
                 <meta name="description" content="Minha biblioteca de livros" />
             </Head>
+            <Bar />
             <main className="container mx-auto p-4">
                 <h1 className="text-3xl font-bold mb-4">Minha Biblioteca</h1>
                 <div className="flex items-center mb-4">

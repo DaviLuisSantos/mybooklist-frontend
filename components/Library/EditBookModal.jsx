@@ -99,7 +99,7 @@ const EditBookModal = ({ isOpen, onClose, book }) => {
                     </div>
                     <button
                         onClick={handleSave}
-                        className="p-2 rounded-md mt-4 bg-blue-600 hover:bg-blue-700 text-white"
+                        className="p-2 rounded-md mt-4 "
                     >
                         Salvar
                     </button>

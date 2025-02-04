@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import Cookies from 'js-cookie';
 
 const withAuth = (WrappedComponent) => {
     const AuthComponent = (props) => {
@@ -11,7 +12,7 @@ const withAuth = (WrappedComponent) => {
             let isInitiallyAuthenticated = false;
             if (typeof window !== 'undefined') {
                 // Verificação inicial síncrona (lado do cliente)
-                const token = localStorage.getItem('Authorization');
+                const token = Cookies.get('Authorization');
                 isInitiallyAuthenticated = !!token;
                 console.log('Token:', token);
             }
@@ -43,8 +44,7 @@ const withAuth = (WrappedComponent) => {
         return <WrappedComponent {...props} />;
     };
 
-    AuthComponent.displayName = `withAuth(${WrappedComponent.displayName || WrappedComponent.name || 'Component'
-        })`;
+    AuthComponent.displayName = `withAuth(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`;
 
     return AuthComponent;
 };

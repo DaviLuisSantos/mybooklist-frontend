@@ -20,7 +20,7 @@ const CreateAccount = ({ isOpen, onClose }) => {
         try {
             const response = await createAccount(username, password, email);
             if (response) {
-                setSuccessMessage('Conta criada com sucesso! Faça login para acessar a sua conta.');
+                setSuccessMessage('Conta criada com sucesso! Verifique se e-mail e faça login para acessar a sua conta.');
                 setTimeout(() => {
                     onClose();
                 }, 2000);
