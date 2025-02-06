@@ -17,22 +17,20 @@ const BookCard = ({
     const getStatusColor = (status) => {
         switch (status) {
             case 'Completo':
-                return 'bg-green-700';
+                return 'bg-green-500';
             case 'Não Iniciado':
-                return 'bg-red-700';
+                return 'bg-red-500';
             case 'Lendo':
-                return 'bg-blue-700';
+                return 'bg-blue-500';
             default:
-                return 'bg-gray-700';
+                return 'bg-gray-500';
         }
     };
 
     const getStatusTextColor = (status) => {
         switch (status) {
             case 'Completo':
-                return 'text-white';
             case 'Não Iniciado':
-                return 'text-white';
             case 'Lendo':
                 return 'text-white';
             default:
@@ -54,7 +52,8 @@ const BookCard = ({
                 className="rounded-lg shadow-md overflow-hidden flex sm:flex-col cursor-pointer transform transition-transform duration-200 hover:scale-105 bg-gray-800 border border-gray-700"
                 onClick={handleModalOpen}
             >
-                <div className="relative w-1/3 h-48 sm:w-full sm:h-40 flex-shrink-0">
+                {/* Capa do Livro */}
+                <div className="relative w-1/3 h-32 sm:w-full sm:h-40 flex-shrink-0">
                     <Image
                         src={cover}
                         alt={`Capa do livro ${title}`}
@@ -68,18 +67,16 @@ const BookCard = ({
                     </div>
                 </div>
 
-                <div className="flex flex-col flex-grow p-4 text-left align-middle sm:text-center gap-2 text-gray-100">
-                    <h2 className="text-xl font-bold text-gray-50">{title}</h2>
-                    <p className="text-gray-400">{author}</p>
+                {/* Informações do Livro */}
+                <div className="flex flex-col flex-grow p-4 text-left sm:text-center gap-3 text-gray-100 relative">
+                    <h2 className="text-lg font-bold text-gray-50">{title}</h2>
+                    <p className="text-gray-400 mt-1 sm:mt-2">{author}</p>
 
-                    <div className=" absolute bottom-2 right-2 flex justify-between flex-wrap items-center">
-                        <div className="flex flex-col">
-                            <span
-                                className="inline-block px-2 py-1 rounded-full text-xs font-medium bg-green-700 text-white"
-                            >
-                                {genre}
-                            </span>
-                        </div>
+                    {/* Categoria */}
+                    <div className="absolute bottom-2 right-2 flex justify-start sm:justify-center flex-wrap items-center">
+                        <span className="inline-block px-2 py-1 rounded-full text-xs font-medium bg-green-700 text-white">
+                            {genre}
+                        </span>
                     </div>
                 </div>
             </div>

@@ -10,7 +10,7 @@ const EditBookModal = ({ isOpen, onClose, book }) => {
     const [genre, setGenre] = useState('');
     const [status, setStatus] = useState('');
     const [startDate, setStartDate] = useState('');
-
+    const [isLoading, setIsLoading] = useState(false); // Novo estado para controlar o loading
 
     useEffect(() => {
         if (book) {
@@ -22,33 +22,84 @@ const EditBookModal = ({ isOpen, onClose, book }) => {
                 setStartDate(new Date(book.startDate).toISOString().split('T')[0]);
             else
                 setStartDate(null)
-
         }
     }, [book]);
 
+    const getNextStatus = (status) => {
+        switch (status) {
+            case 'Não Iniciado': return 'Lendo';
+            case 'Lendo': return 'Completo';
+            default: return status; // Para 'Completo' ou outros status
+        }
+    };
 
-    const handleStatusColor = (status) => {
-        if (status === 'Não Iniciado') return 'bg-green-700';
-        if (status === 'Lendo') return 'bg-blue-700';
-        if (status === 'Completo') return 'bg-green-700 hidden';
-    }
-    const handleStatusMessage = (status) => {
-        if (status === 'Não Iniciado') return 'Iniciar Leitura';
-        if (status === 'Lendo') return 'Finalizar Leitura';
-    }
+    const getStatusButtonText = (status) => {
+        switch (status) {
+            case 'Não Iniciado': return 'Iniciar Leitura';
+            case 'Lendo': return 'Finalizar Leitura';
+            default: return 'Livro Completo'; // Para 'Completo' ou outros status
+        }
+    };
+
+    const handleStatusChangeAndSave = async () => {
+        setIsLoading(true); // Inicia o loading
+        try {
+            const nextStatus = getNextStatus(status);
+            setStatus(nextStatus); // Atualiza o status localmente
+            const updatedBook = {
+                ...book,
+                title,
+                author,
+                genre,
+                status: nextStatus, // Usa o novo status
+                startDate
+            };
+            await updateBook(updatedBook); // Salva com o novo status
+            onClose();
+        } catch (error) {
+            console.error("Erro ao atualizar status:", error);
+            // Aqui você pode adicionar um tratamento de erro visual para o usuário
+        } finally {
+            setIsLoading(false); // Finaliza o loading, independentemente do resultado
+        }
+    };
 
     const handleSave = async () => {
-        const updatedBook = {
-            ...book,
-            title,
-            author,
-            genre,
-            status,
-            startDate,
-        };
-        await updateBook(updatedBook);
-        onClose();
+        setIsLoading(true); // Inicia o loading
+        try {
+            const updatedBook = {
+                ...book,
+                title,
+                author,
+                genre,
+                status,
+                startDate,
+            };
+            await updateBook(updatedBook);
+            onClose();
+        } catch (error) {
+            console.error("Erro ao salvar livro:", error);
+            // Aqui você pode adicionar um tratamento de erro visual para o usuário
+        } finally {
+            setIsLoading(false); // Finaliza o loading, independentemente do resultado
+        }
     };
+
+    const getStatusButtonColor = (status) => {
+        switch (status) {
+            case 'Não Iniciado': return 'bg-blue-500 hover:bg-blue-700 text-white';
+            case 'Lendo': return 'bg-green-500 hover:bg-green-700 text-white';
+            default: return 'bg-gray-500 hover:bg-gray-700 text-gray-200 cursor-not-allowed'; // Para Completo ou outros
+        }
+    };
+
+    // Componente para o Spinner (Loading)
+    const LoadingSpinner = () => (
+        <svg className="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+            <circle className="opacity-75" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" strokeDasharray="62.83" strokeDashoffset="0" />
+        </svg>
+    );
 
     if (!isOpen) return null;
 
@@ -65,6 +116,7 @@ const EditBookModal = ({ isOpen, onClose, book }) => {
                             value={title}
                             onChange={(e) => setTitle(e.target.value)}
                             className="bg-gray-800 text-white p-2 rounded-md w-full"
+                            disabled={isLoading} // Desabilita o input durante o loading
                         />
                     </div>
                     <div>
@@ -74,6 +126,7 @@ const EditBookModal = ({ isOpen, onClose, book }) => {
                             value={author}
                             onChange={(e) => setAuthor(e.target.value)}
                             className="bg-gray-800 text-white p-2 rounded-md w-full"
+                            disabled={isLoading} // Desabilita o input durante o loading
                         />
                     </div>
                     <div>
@@ -83,6 +136,7 @@ const EditBookModal = ({ isOpen, onClose, book }) => {
                             value={genre}
                             onChange={(e) => setGenre(e.target.value)}
                             className="bg-gray-800 text-white p-2 rounded-md w-full"
+                            disabled={isLoading} // Desabilita o input durante o loading
                         />
                     </div>
                     <div>
@@ -91,6 +145,7 @@ const EditBookModal = ({ isOpen, onClose, book }) => {
                             value={status}
                             onChange={(e) => setStatus(e.target.value)}
                             className="bg-gray-800 text-white p-2 rounded-md w-full"
+                            disabled={isLoading} // Desabilita o select durante o loading
                         >
                             <option value="Não Iniciado">Não Iniciado</option>
                             <option value="Lendo">Lendo</option>
@@ -104,14 +159,22 @@ const EditBookModal = ({ isOpen, onClose, book }) => {
                             value={startDate}
                             onChange={(e) => setStartDate(e.target.value)}
                             className="bg-gray-800 text-white p-2 rounded-md w-full"
+                            disabled={isLoading} // Desabilita o input durante o loading
                         />
                     </div>
-                    <button className={`p-2 rounded-md mt-4 ${handleStatusColor(status)}`}>{handleStatusMessage(status)}</button>
+                    <button
+                        className={`p-2 rounded-md mt-4  ${getStatusButtonColor(status)} flex items-center justify-center`}
+                        onClick={handleStatusChangeAndSave}
+                        disabled={isLoading} // Desabilita o botão durante o loading
+                    >
+                        {isLoading ? <LoadingSpinner /> : getStatusButtonText(status)}
+                    </button>
                     <button
                         onClick={handleSave}
-                        className="p-2 rounded-md mt-4 "
+                        className="p-2 rounded-md mt-4 bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center"
+                        disabled={isLoading} // Desabilita o botão durante o loading
                     >
-                        Salvar
+                        {isLoading ? <LoadingSpinner /> : "Salvar"}
                     </button>
                 </div>
             </div>
