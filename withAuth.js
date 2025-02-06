@@ -11,7 +11,6 @@ const withAuth = (WrappedComponent) => {
         useEffect(() => {
             let isInitiallyAuthenticated = false;
             if (typeof window !== 'undefined') {
-                // Verificação inicial síncrona (lado do cliente)
                 const token = Cookies.get('Authorization');
                 isInitiallyAuthenticated = !!token;
                 console.log('Token:', token);
@@ -24,13 +23,13 @@ const withAuth = (WrappedComponent) => {
                 console.log('Redirecionando para /login');
                 return;
             } else {
-                setIsAuthenticated(true); // Seta para true somente se houver um token
+                setIsAuthenticated(true);
                 console.log('Usuário autenticado');
                 setLoading(false);
             }
         }, [router]);
 
-        // Se não estiver autenticado, não renderiza o componente
+        
         if (loading) {
             console.log('Carregando...');
             return null;

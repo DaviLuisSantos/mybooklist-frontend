@@ -6,7 +6,6 @@ function AddBookForm() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Add book to the list
         console.log(`Adding book: ${title} by ${author}`);
         setTitle('');
         setAuthor('');

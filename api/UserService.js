@@ -1,11 +1,11 @@
 import apiClient from './apiClient';
 
-const API_ENDPOINT = 'user'; // Substitua pelo seu endpoint da API
+const API_ENDPOINT = 'user'; 
 
 export const loginUser = async (username, password) => {
     try {
         const response = await apiClient.post(
-            `${API_ENDPOINT}/login`, // Ajuste o endpoint conforme necessário
+            `${API_ENDPOINT}/login`, 
             { username, password }
         );
         return response;
@@ -17,7 +17,7 @@ export const loginUser = async (username, password) => {
 export const createAccount = async (username, password, email) => {
     try {
         const response = await apiClient.post(
-            `${API_ENDPOINT}/register`, // Ajuste o endpoint conforme necessário
+            `${API_ENDPOINT}/register`, 
             { username, password, email }
         );
         if (response.status >= 200 && response.status < 300) {
@@ -32,7 +32,7 @@ export const createAccount = async (username, password, email) => {
 export const forgotPassword = async (email) => {
     try {
         const response = await apiClient.post(
-            `${API_ENDPOINT}/forgot-password`, // Ajuste o endpoint conforme necessário
+            `${API_ENDPOINT}/forgot-password`, 
             { email }
         );
         return response.data;

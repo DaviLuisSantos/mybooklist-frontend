@@ -1,7 +1,7 @@
 import Cookies from 'js-cookie';
 
 export const setToken = (token, key, user) => {
-    Cookies.set('Authorization', token, { expires: 7 }); // Expira em 7 dias
+    Cookies.set('Authorization', token, { expires: 7 });
     Cookies.set('key', key, { expires: 7 });
     Cookies.set('user', user, { expires: 7 });
 };

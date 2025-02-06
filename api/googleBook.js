@@ -6,7 +6,7 @@ export const searchGoogleBooks = async (searchTerm) => {
             params: {
                 q: searchTerm,
             },
-            timeout: 10000, // 10 segundos de timeout
+            timeout: 10000, 
         });
 
         return response.data.items || [];

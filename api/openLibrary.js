@@ -1,11 +1,10 @@
-// lib/api/openLibrary.js
 import axios from 'axios';
 
 export const searchOpenLibrary = async (searchTerm) => {
     try {
         const response = await axios.get(`https://openlibrary.org/search.json`, {
             params: { q: searchTerm },
-            timeout: 10000, // 10 segundos de timeout
+            timeout: 10000, 
         });
 
         return response.data.docs || [];

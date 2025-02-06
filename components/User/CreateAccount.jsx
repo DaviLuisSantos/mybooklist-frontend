@@ -25,7 +25,7 @@ const CreateAccount = ({ isOpen, onClose }) => {
                     onClose();
                 }, 2000);
 
-                router.push('/login'); // Redirecione para a página de login após a criação da conta
+                router.push('/login');
             }
 
         } catch (error) {

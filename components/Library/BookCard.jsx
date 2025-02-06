@@ -68,13 +68,12 @@ const BookCard = ({
                     </div>
                 </div>
 
-                <div className="flex flex-col flex-grow p-4 text-left sm:text-center gap-2 text-gray-100">
+                <div className="flex flex-col flex-grow p-4 text-left align-middle sm:text-center gap-2 text-gray-100">
                     <h2 className="text-xl font-bold text-gray-50">{title}</h2>
                     <p className="text-gray-400">{author}</p>
 
-                    <div className="flex justify-between flex-wrap items-center">
+                    <div className=" absolute bottom-2 right-2 flex justify-between flex-wrap items-center">
                         <div className="flex flex-col">
-                            <span className="text-gray-400 text-sm">Categoria</span>
                             <span
                                 className="inline-block px-2 py-1 rounded-full text-xs font-medium bg-green-700 text-white"
                             >

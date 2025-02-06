@@ -55,21 +55,7 @@ const Library = () => {
             <Bar />
             <main className="container mx-auto p-4">
                 <h1 className="text-3xl font-bold mb-4">Minha Biblioteca</h1>
-                <div className="flex items-center mb-4">
-                    <span className="mr-2 font-bold">Ordenar por:</span>
-                    <select
-                        className="bg-gray-800 text-white p-2 rounded-md"
-                        onChange={(e) => handleSort(e.target.value)}
-                        value={sortBy || ""}
-                    >
-                        <option value="">Selecione</option>
-                        <option value="title">Título</option>
-                        <option value="author">Autor</option>
-                        <option value="genre">Categoria</option>
-                        <option value="status">Status</option>
-                        <option value="startDate">Data de Início</option>
-                    </select>
-                </div>
+
                 {Object.keys(groupedBooks).map((status, index) => (
                     <BookSection
                         key={index}

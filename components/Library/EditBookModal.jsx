@@ -27,6 +27,15 @@ const EditBookModal = ({ isOpen, onClose, book }) => {
     }, [book]);
 
 
+    const handleStatusColor = (status) => {
+        if (status === 'Não Iniciado') return 'bg-green-700';
+        if (status === 'Lendo') return 'bg-blue-700';
+        if (status === 'Completo') return 'bg-green-700 hidden';
+    }
+    const handleStatusMessage = (status) => {
+        if (status === 'Não Iniciado') return 'Iniciar Leitura';
+        if (status === 'Lendo') return 'Finalizar Leitura';
+    }
 
     const handleSave = async () => {
         const updatedBook = {
@@ -97,6 +106,7 @@ const EditBookModal = ({ isOpen, onClose, book }) => {
                             className="bg-gray-800 text-white p-2 rounded-md w-full"
                         />
                     </div>
+                    <button className={`p-2 rounded-md mt-4 ${handleStatusColor(status)}`}>{handleStatusMessage(status)}</button>
                     <button
                         onClick={handleSave}
                         className="p-2 rounded-md mt-4 "

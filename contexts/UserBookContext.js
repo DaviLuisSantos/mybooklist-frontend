@@ -54,7 +54,7 @@ export const BooksProvider = ({ children }) => {
                 pages: book.book.pages,
                 isbn: book.book.isbn,
                 status: book.status,
-                startDate: book.dateStarted, // Formato yyyy-mm-dd
+                startDate: book.dateStarted, 
             }));
             setBooks(livros);
         } catch (error) {
