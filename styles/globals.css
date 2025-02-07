@@ -3,6 +3,18 @@
 @tailwind utilities;
 
 :root {
+  --background: #FFFFFF;
+  --foreground: #1A1A1A;
+  --primary-color: #bb86fc;
+  --secondary-color: #F2F2F2;
+  --accent-color: #03dac6;
+  --primary-button-color: #007AFF;
+  --text-principal-color: #1A1A1A;
+  --text-secondary-color: #2A282F;
+  --book-author-color: #646464;
+}
+
+[data-theme="dark"] {
   --background: #121212;
   --foreground: #e0e0e0;
   --primary-color: #bb86fc;
@@ -10,14 +22,9 @@
   --accent-color: #03dac6;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #121212;
-    --foreground: #e0e0e0;
-    --primary-color: #bb86fc;
-    --secondary-color: #1f1f1f;
-    --accent-color: #03dac6;
-  }
+h2 {
+  color: var(--foreground);
+
 }
 
 body {
@@ -31,8 +38,33 @@ a {
   text-decoration: none;
 }
 
+button {
+  color: var(--primary-button-color);
+}
+
 a:hover {
   color: var(--accent-color);
+}
+
+#bar {
+  background-color: var(--primary-button-color);
+  color: var(--secondary-color)
+}
+
+#book-info {
+  background-color: var(--secondary-color);
+}
+
+#book-title {
+  color: var(--text-secondary-color);
+}
+
+#book-author {
+  color: var(--book-author-color);
+}
+
+#genre {
+  background-color: var(--primary-button-color);
 }
 
 /*

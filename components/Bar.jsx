@@ -16,7 +16,7 @@ const Bar = () => {
     }, [user]);
 
     return (
-        <div className="fixed top-0 left-0 w-full bg-gray-800 text-white p-4 shadow-md z-50">
+        <div className=" w-full p-4 shadow-md z-50" id='bar'>
             <h1 className="text-center text-xl font-bold">
                 Lista de leitura de {username}
             </h1>

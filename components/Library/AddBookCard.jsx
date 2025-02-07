@@ -15,7 +15,7 @@ const AddBookCard = ({ onAddBook }) => {
 
     return (
         <>
-            <div className="bg-gray-800 text-white rounded-lg shadow-md overflow-hidden flex flex-col items-center justify-center cursor-pointer" onClick={handleModalOpen}>
+            <div className="rounded-lg shadow-md overflow-hidden flex flex-col items-center justify-center cursor-pointer" onClick={handleModalOpen}>
                 <div className="p-4 flex flex-col items-center justify-center">
                     <FaPlus className="text-4xl mb-2" />
                     <span className="text-xl font-bold">Adicionar Livro</span>

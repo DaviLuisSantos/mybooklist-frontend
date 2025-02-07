@@ -41,7 +41,7 @@ const Library = () => {
     const LoadingIndicator = () => (
         <div className="fixed inset-0 flex justify-center items-center">
             <div className="animate-spin rounded-full h-16 w-16 sm:h-24 sm:w-24 md:h-32 md:w-32 border-t-4 border-b-4 border-blue-500"></div>
-            <span className="ml-2 sm:ml-4 text-lg sm:text-xl text-gray-700">Carregando livros...</span>
+            <span className="ml-2 sm:ml-4 text-lg sm:text-xl ">Carregando livros...</span>
         </div>
     );
 
@@ -63,7 +63,6 @@ const Library = () => {
             </Head>
             <Bar />
             <main className="container mx-auto p-4">
-                <h1 className="text-3xl font-bold mb-4">Minha Biblioteca</h1>
 
                 {orderedStatuses.map((status, index) => (
                     <BookSection

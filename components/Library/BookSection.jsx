@@ -11,15 +11,15 @@ const BookSection = ({ title, books, onSave }) => {
 
     return (
         <section className="mb-10">
-            <div className="border-b border-gray-200 dark:border-gray-700 pb-4 mb-4">
+            <div className="border-b pb-4 mb-4">
                 <div className="flex justify-between items-center">
-                    <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 relative group">
+                    <h2 className="text-2xl font-bold relative group">
                         {title}
                         <span className="absolute bottom-[-2px] left-0 w-0 h-[2px] bg-gray-500 group-hover:w-full transition-all duration-300"></span>
                     </h2>
                     <button
                         onClick={toggleCollapse}
-                        className="flex items-center text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 focus:outline-none transition duration-300 ease-in-out rounded-full p-2"
+                        className="flex items-center  hover:text-gray-600 dark:hover:text-gray-300 focus:outline-none transition duration-300 ease-in-out rounded-full p-2"
                     >
                         {isCollapsed ? <FaChevronDown className="ml-2 text-lg" /> : <FaChevronUp className="ml-2 text-lg" />}
                     </button>
