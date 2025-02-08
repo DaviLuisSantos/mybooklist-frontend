@@ -5,21 +5,24 @@
 :root {
   --background: #FFFFFF;
   --foreground: #1A1A1A;
-  --primary-color: #bb86fc;
+  --current-line: #F2F2F2;
+  --comment: #646464;
+  --primary-color: #007AFF;
   --secondary-color: #F2F2F2;
   --accent-color: #03dac6;
-  --primary-button-color: #007AFF;
   --text-principal-color: #1A1A1A;
   --text-secondary-color: #2A282F;
   --book-author-color: #646464;
 }
 
-[data-theme="dark"] {
-  --background: #121212;
-  --foreground: #e0e0e0;
+.dark {
+  --background: #282a36;
+  --foreground: #f8f8f2;
+  --current-line: #44475a;
+  --comment: #6272a4;
   --primary-color: #bb86fc;
   --secondary-color: #1f1f1f;
-  --accent-color: #03dac6;
+  --accent-color: #50fa7b;
 }
 
 h2 {
@@ -38,17 +41,33 @@ a {
   text-decoration: none;
 }
 
-button {
-  color: var(--primary-button-color);
-}
-
 a:hover {
   color: var(--accent-color);
 }
 
+input{
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+button{
+  background-color: var(--primary-color);
+  color: var(--foreground);
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+button:hover{
+  background-color: var(--accent-color);
+}
+
+#modal {
+  background-color: var(--current-line);
+}
+
 #bar {
-  background-color: var(--primary-button-color);
-  color: var(--secondary-color)
+  background-color: var(--current-line);
+  color: var(--foreground)
 }
 
 #book-info {
@@ -56,15 +75,24 @@ a:hover {
 }
 
 #book-title {
-  color: var(--text-secondary-color);
+  color: var(--foreground);
 }
 
 #book-author {
-  color: var(--book-author-color);
+  color: var(--comment);
 }
 
 #genre {
-  background-color: var(--primary-button-color);
+  background-color: var(--primary-color);
+}
+
+#book-card {
+  border-color: var(--current-line);
+  background-color: var(--secondary-color);
+}
+
+#date {
+  color: var(--comment)
 }
 
 /*

@@ -49,8 +49,8 @@ const BookCard = ({
     return (
         <>
             <div
-                className="rounded-lg shadow-md overflow-hidden flex sm:flex-row md:flex-row lg:flex-col cursor-pointer transform transition-transform duration-200 hover:scale-105 border border-gray-200 lg:min-h-80 sm:min-h-0"
-                onClick={handleModalOpen}
+                className="rounded-lg shadow-md overflow-hidden flex sm:flex-row md:flex-row lg:flex-col cursor-pointer transform transition-transform duration-200 hover:scale-105 border lg:min-h-80 sm:min-h-0"
+                id="book-card" onClick={handleModalOpen}
             >
                 {/* Capa do Livro */}
                 <div className="relative w-2/5 h-auto sm:w-2/5 sm:h-auto md:w-1/3 md:h-full lg:w-full lg:h-48 flex-shrink-0">
