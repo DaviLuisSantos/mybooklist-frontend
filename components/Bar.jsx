@@ -17,11 +17,11 @@ const Bar = () => {
     }, [user]);
 
     return (
-        <div className=" w-full p-4 shadow-md z-50" id='bar'>
-            <ThemeChange />
-            <h1 className="text-center text-xl font-bold">
+        <div className="w-full p-4 shadow-md z-50 flex items-center justify-between" id='bar'>
+            <h1 className="text-xl font-bold">
                 Lista de leitura de {username}
             </h1>
+            <ThemeChange />
         </div>
     );
 };
