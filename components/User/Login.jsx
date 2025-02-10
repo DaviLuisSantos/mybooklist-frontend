@@ -36,17 +36,17 @@ const Login = () => {
             <div className="hidden lg:block lg:w-3/5 bg-cover bg-center" style={{ backgroundImage: 'url(https://www.thepublicdiscourse.com/wp-content/uploads/2023/09/BOOKS.jpg)' }}></div>
 
             {/* Formulário de login */}
-            <div className="w-full lg:w-2/5 flex items-start justify-center bg-gray-50">
+            <div className="w-full lg:w-2/5 flex items-start justify-center ">
 
                 <div className="px-4 py-6 w-full lg:w-4/5">
                     <div className="flex items-center justify-center mb-8">
-                        <svg className="w-8 h-8 text-blue-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <svg className="w-8 h-8 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 20l9-5-9-5-9 5 9 5z" />
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 12l9-5-9-5-9 5 9 5z" />
                         </svg>
-                        <h1 className="text-2xl font-bold text-gray-900 mb">My Book List</h1>
+                        <h1 className="text-2xl font-bold mb">My Book List</h1>
                     </div>
-                    <h2 className="text-2xl font-semibold text-gray-900 text-left my-4">
+                    <h2 className="text-2xl font-semibold text-left my-4">
                         Nice to see you again
                     </h2>
 
@@ -58,7 +58,7 @@ const Login = () => {
                                 placeholder="Email or phone number"
                                 value={username}
                                 onChange={(e) => setEmailOrPhone(e.target.value)}
-                                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:border-blue-500 transition-colors text-gray-700 text-sm lg:text-base"
+                                className="w-full px-4 py-3 rounded-lg border focus:outline-none focus:border-blue-500 transition-colors text-sm lg:text-base"
                                 required
                             />
                         </div>
@@ -69,13 +69,13 @@ const Login = () => {
                                 placeholder="Enter password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:border-blue-500 transition-colors text-gray-700 text-sm lg:text-base"
+                                className="w-full px-4 py-3 rounded-lg border focus:outline-none focus:border-blue-500 transition-colors text-sm lg:text-base"
                                 required
                             />
                             <button
                                 type="button"
                                 onClick={() => setShowPassword(!showPassword)}
-                                className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
+                                className="absolute right-4 top-1/2 transform -translate-y-1/2 hover:text-gray-700 focus:outline-none"
                             >
                                 {showPassword ? (
                                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -95,7 +95,7 @@ const Login = () => {
                             <label className="flex items-center text-gray-700 text-sm lg:text-base">
                                 <input
                                     type="checkbox"
-                                    className="mr-2 rounded focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300"
+                                    className="mr-2 rounded focus:ring-blue-500 h-4 w-4"
                                     checked={rememberMe}
                                     onChange={() => setRememberMe(!rememberMe)}
                                 />
@@ -105,6 +105,7 @@ const Login = () => {
                                 type="button"
                                 onClick={() => setIsForgotPasswordOpen(true)}
                                 className="text-blue-500 hover:underline focus:outline-none text-sm lg:text-base"
+
                             >
                                 Forgot password?
                             </button>
@@ -113,7 +114,8 @@ const Login = () => {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="bg-blue-500 text-white font-bold py-3 px-6 rounded-lg w-full hover:bg-blue-600 focus:outline-none focus:shadow-outline disabled:opacity-50"
+                            className="font-bold py-3 px-6 rounded-lg w-full focus:outline-none focus:shadow-outline disabled:opacity-50"
+                            id='button'
                         >
                             {loading ? 'Loading...' : 'Sign In'}
                         </button>
@@ -123,8 +125,8 @@ const Login = () => {
 
                     <div className="mt-6">
                         <button
-                            className="flex items-center justify-center w-full px-4 py-3 rounded-lg border border-gray-300 hover:bg-gray-100 focus:outline-none text-gray-700 text-sm lg:text-base"
-                        >
+                            className="flex items-center justify-center w-full px-4 py-3 rounded-lg border border-gray-300 hover:bg-gray-100 focus:outline-none text-sm lg:text-base"
+                            id="button">
                             <svg className="w-5 h-5 mr-2" viewBox="0 0 48 48">
                                 <defs>
                                     <path id="a" d="M44.5 20H24v8.5h11.8C34.7 33.9 30.1 37 24 37c-7.2 0-13-5.8-13-13s5.8-13 13-13c3.1 0 5.9 1.1 8.1 2.9l6.4-6.4C34.7 6.3 29.1 4 24 4c-11.8 0-21.3 9.5-21.3 21.3 0 11.8 9.5 21.3 21.3 21.3 11.8 0 21.3-9.5 21.3-21.3 0-.9-0.1-1.7-0.2-2.5z" />
@@ -145,7 +147,7 @@ const Login = () => {
                         <p className="text-gray-700 text-sm lg:text-base">Don't have an account?
                             <button
                                 onClick={() => setIsCreateAccountOpen(true)}
-                                className="text-blue-500 font-medium hover:underline focus:outline-none ml-1"
+                                className="bg-blue-400 text-blue-400 bg-opacity-0 text-blue font-medium hover:underline focus:outline-none ml-1"
                             >
                                 Sign up now
                             </button>

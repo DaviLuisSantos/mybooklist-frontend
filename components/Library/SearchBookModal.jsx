@@ -47,7 +47,7 @@ const SearchBookModal = ({ isOpen, onClose, onAddBook }) => {
                 cover: book.volumeInfo.imageLinks?.thumbnail || '/images/no-cover.jpg',
                 genre: book.volumeInfo.categories ? book.volumeInfo.categories[0] : 'Não Categorizado',
                 description: book.volumeInfo.description || 'Sem descrição disponível',
-                pages: book.volumeInfo.pageCount || 'Desconhecido', 
+                pages: book.volumeInfo.pageCount || 'Desconhecido',
                 isbn: book.volumeInfo.industryIdentifiers ? book.volumeInfo.industryIdentifiers[0].identifier : 'Desconhecido',
             };
             setSelectedBook(bookDetails);
@@ -97,17 +97,17 @@ const SearchBookModal = ({ isOpen, onClose, onAddBook }) => {
     if (!isOpen) return null;
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 sm:p-8">
-            <div className="bg-gray-700 rounded-lg p-8 max-w-2xl w-full max-h-full overflow-y-auto relative">
-                <button className="absolute top-2 right-2 text-white text-2xl cursor-pointer rounded-lg" onClick={() => { resetModal(); onClose(); }}>×</button>
-                <h2 className="text-2xl font-bold mb-4 text-white">Adicionar Livro</h2>
+            <div className=" rounded-lg p-8 max-w-2xl w-full max-h-full overflow-y-auto relative" id="modal">
+                <button className="absolute top-2 right-2 text-2xl cursor-pointer rounded-lg" id='button' onClick={() => { resetModal(); onClose(); }}>×</button>
+                <h2 className="text-2xl font-bold mb-4 ">Adicionar Livro</h2>
                 <input
                     type="text"
                     placeholder="Pesquisar Livro"
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="bg-gray-800 text-white p-2 rounded-md w-full mb-4"
+                    className="p-2 rounded-md w-full mb-4"
                 />
-                {loading && <p className="text-white text-center">Carregando...</p>}
+                {loading && <p className="text-center">Carregando...</p>}
                 {error && <p className="text-red-500 text-center">{error}</p>}
                 <div className="overflow-y-auto max-h-96">
                     {searchResults.map((book, index) => (
@@ -125,13 +125,13 @@ const SearchBookModal = ({ isOpen, onClose, onAddBook }) => {
                                 />
                             </div>
                             <div className="flex-1">
-                                <h3 className="text-white font-bold text-sm">{book.volumeInfo.title}</h3>
-                                <p className="text-gray-300 text-sm">{book.volumeInfo.authors?.join(', ') || 'Autor desconhecido'}</p>
+                                <h3 className="font-bold text-sm">{book.volumeInfo.title}</h3>
+                                <p className="text-sm">{book.volumeInfo.authors?.join(', ') || 'Autor desconhecido'}</p>
                             </div>
                         </div>
                     ))}
                     {searchResults.length === 0 && !loading && !error && (
-                        <p className="text-gray-300 text-center">Nenhum livro encontrado.</p>
+                        <p className="text-center">Nenhum livro encontrado.</p>
                     )}
                 </div>
                 <BookDetailsModal

@@ -36,3 +36,14 @@ export const updateUserBook = async (bookDetails) => {
         console.log(error);
     }
 }
+
+export const deleteUserBook = async (bookId) => {
+    try {
+        const response = await apiClient.delete(
+            `${API_ENDPOINT}/delete/${bookId}`
+        );
+        return response;
+    } catch (error) {
+        console.log(error);
+    }
+};
