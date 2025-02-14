@@ -3,13 +3,15 @@ import { useRouter } from 'next/router';
 import { UserContext } from '../../contexts/UserContext';
 import CreateAccount from './CreateAccount';
 import ForgotPassword from './ForgotPassword';
+import { createAccount } from '../../api/UserService';
 import LoginForm from './LoginForm';
 import { useGoogleLogin } from '@react-oauth/google';
 import { FcGoogle } from "react-icons/fc";
 import ThemeChange from '../ThemeChange';
+import axios from 'axios';
 
 const Login = () => {
-    const { user } = useContext(UserContext);
+    const { user, setUser, login } = useContext(UserContext);
     const [currentView, setCurrentView] = useState('login'); // Estado para controlar a visualização atual
     const router = useRouter();
 
@@ -19,8 +21,27 @@ const Login = () => {
         }
     }, [user, router]);
 
+    const fetchGoogleUserData = async (tokenResponse) => {
+        try {
+            const { access_token } = tokenResponse;
+            const response = await axios.get('https://www.googleapis.com/oauth2/v1/userinfo?alt=json', {
+                headers: {
+                    Authorization: `Bearer ${access_token}`,
+                },
+            });
+            const userData = response.data;
+            const createResponse = await createAccount(userData.given_name, userData.id, userData.email,);
+            if (createResponse) {
+                await login(userData.given_name, userData.id);
+                router.push('/library');
+            }
+        } catch (error) {
+            console.error('Failed to fetch user data:', error);
+        }
+    };
+
     const loginG = useGoogleLogin({
-        onSuccess: tokenResponse => console.log(tokenResponse),
+        onSuccess: fetchGoogleUserData,
     });
 
     return (
