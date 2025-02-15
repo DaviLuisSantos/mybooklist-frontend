@@ -14,7 +14,7 @@ const LoginForm = ({ setCurrentView }) => {
         e.preventDefault();
         try {
             await login(username, password);
-            router.push('/library');
+            router.push('/');
         } catch (error) {
             console.error('Erro ao fazer login:', error);
         }

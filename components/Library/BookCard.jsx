@@ -46,6 +46,14 @@ const BookCard = ({
         setIsModalOpen(false);
     };
 
+    const formatDate = (dateString) => {
+        if (!dateString) {
+            return 'a ler';
+        }
+        const [year, month, day] = dateString.split('-');
+        return `${day}-${month}-${year}`;
+    };
+
     return (
         <>
             <div
@@ -74,7 +82,7 @@ const BookCard = ({
                     <h2 className="mt-1 sm:mt-2 md:text-center" id="book-author">{author}</h2>
                     <div className="flex justify-between w-full mt-2 lg:mt-2 lg:mb-2 sm:justify-between md:justify-between">
                         <span className="inline-block px-2 py-1 rounded-full text-xs font-medium text-[#939393]" id="date">
-                            {startDate}
+                            {formatDate(startDate)}
                         </span>
                         <span className="inline-block px-2 py-1 rounded-full text-xs font-medium text-white" id="genre">
                             {genre}

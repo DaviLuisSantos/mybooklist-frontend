@@ -3,7 +3,7 @@ import { BooksContext } from '../../contexts/UserBookContext';
 import { useTheme } from 'next-themes';
 
 const EditBookModal = ({ isOpen, onClose, book }) => {
-    const { updateBook } = useContext(BooksContext);
+    const { updateBook, deleteBook } = useContext(BooksContext);
     const { theme } = useTheme();
     const [title, setTitle] = useState('');
     const [author, setAuthor] = useState('');
@@ -45,6 +45,7 @@ const EditBookModal = ({ isOpen, onClose, book }) => {
         setIsLoading(true); // Inicia o loading
         try {
             const nextStatus = getNextStatus(status);
+            const today = new Date().toLocaleDateString('en-CA'); // Formato yyyy-mm-dd em GMT local
             setStatus(nextStatus); // Atualiza o status localmente
             const updatedBook = {
                 ...book,
@@ -52,7 +53,7 @@ const EditBookModal = ({ isOpen, onClose, book }) => {
                 author,
                 genre,
                 status: nextStatus, // Usa o novo status
-                startDate
+                startDate: nextStatus === 'Lendo' && status === 'Não Iniciado' ? today : startDate // Define a data de início se o status for "Lendo"
             };
             await updateBook(updatedBook); // Salva com o novo status
             onClose();
@@ -85,6 +86,19 @@ const EditBookModal = ({ isOpen, onClose, book }) => {
         }
     };
 
+    const handleDelete = async () => {
+        setIsLoading(true); // Inicia o loading
+        try {
+            await deleteBook(book.id);
+            onClose();
+        } catch (error) {
+            console.error("Erro ao deletar livro:", error);
+            // Aqui você pode adicionar um tratamento de erro visual para o usuário
+        } finally {
+            setIsLoading(false); // Finaliza o loading, independentemente do resultado
+        }
+    };
+
     const getStatusButtonColor = (status) => {
         switch (status) {
             case 'Não Iniciado': return 'bg-blue-500 hover:bg-blue-700 text-white';
@@ -105,9 +119,9 @@ const EditBookModal = ({ isOpen, onClose, book }) => {
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 sm:p-8">
-            <div className=" rounded-lg p-8 max-w-2xl w-full relative" id="modal">
-                <button className="absolute top-2 right-2 t text-2xl cursor-pointer rounded-lg" id='button' onClick={onClose}>×</button>
-                <h2 className="text-2xl font-bold mb-4 ">Editar Livro</h2>
+            <div className="rounded-lg p-8 max-w-2xl w-full relative" id="modal">
+                <button className="absolute top-2 right-2 text-2xl cursor-pointer rounded-lg" id='button' onClick={onClose}>×</button>
+                <h2 className="text-2xl font-bold mb-4">Editar Livro</h2>
                 <div className="flex flex-col space-y-2">
                     <div>
                         <label className="">Título:</label>
@@ -115,12 +129,12 @@ const EditBookModal = ({ isOpen, onClose, book }) => {
                             type="text"
                             value={title}
                             onChange={(e) => setTitle(e.target.value)}
-                            className=" p-2 rounded-md w-full"
+                            className="p-2 rounded-md w-full"
                             disabled={isLoading} // Desabilita o input durante o loading
                         />
                     </div>
                     <div>
-                        <label >Autor:</label>
+                        <label>Autor:</label>
                         <input
                             type="text"
                             value={author}
@@ -153,7 +167,7 @@ const EditBookModal = ({ isOpen, onClose, book }) => {
                         </select>
                     </div>
                     <div>
-                        <label >Data de Início:</label>
+                        <label>Data de Início:</label>
                         <input
                             type="date"
                             value={startDate}
@@ -163,7 +177,7 @@ const EditBookModal = ({ isOpen, onClose, book }) => {
                         />
                     </div>
                     <button
-                        className={`p-2 rounded-md mt-4  ${getStatusButtonColor(status)} flex items-center justify-center`}
+                        className={`p-2 rounded-md mt-4 ${getStatusButtonColor(status)} flex items-center justify-center`}
                         onClick={handleStatusChangeAndSave}
                         disabled={isLoading} // Desabilita o botão durante o loading
                     >
@@ -171,11 +185,19 @@ const EditBookModal = ({ isOpen, onClose, book }) => {
                     </button>
                     <button
                         onClick={handleSave}
-                        className="p-2 rounded-md mt-4  flex items-center justify-center"
+                        className="p-2 rounded-md mt-4 flex items-center justify-center"
                         id='button'
                         disabled={isLoading} // Desabilita o botão durante o loading
                     >
                         {isLoading ? <LoadingSpinner /> : "Salvar"}
+                    </button>
+                    <button
+                        onClick={handleDelete}
+                        className="p-2 rounded-md mt-4 bg-red-500 hover:bg-red-700 text-white flex items-center justify-center"
+                        id='delete-button'
+                        disabled={isLoading} // Desabilita o botão durante o loading
+                    >
+                        {isLoading ? <LoadingSpinner /> : "Deletar"}
                     </button>
                 </div>
             </div>

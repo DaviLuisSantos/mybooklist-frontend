@@ -72,12 +72,12 @@ const SearchBookModal = ({ isOpen, onClose, onAddBook }) => {
             const bookDetails = {
                 ...selectedBook,
                 status,
-                startDate,
+                startDate: startDate == "" ? null : startDate,
             };
 
             try {
                 const response = await createBook(bookDetails);
-                const response2 = await createUserBook({ bookId: response.data.bookId, status, startDate });
+                const response2 = await createUserBook({ bookId: response.data.bookId, status, startDate: startDate == "" ? null : startDate });
 
                 if (response.status >= 200 && response.status < 300) {
                     onAddBook(bookDetails);

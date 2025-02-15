@@ -17,7 +17,7 @@ const Login = () => {
 
     useEffect(() => {
         if (user) {
-            router.push('/library');
+            router.push('/');
         }
     }, [user, router]);
 
@@ -33,7 +33,7 @@ const Login = () => {
             const createResponse = await createAccount(userData.given_name, userData.id, userData.email,);
             if (createResponse) {
                 await login(userData.given_name, userData.id);
-                router.push('/library');
+                router.push('/');
             }
         } catch (error) {
             console.error('Failed to fetch user data:', error);
