@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { getUserBooks, updateUserBook, deleteUserBook } from '../api/UserBookService';
+import Cookies from 'js-cookie';
 
 export const BooksContext = createContext();
 
@@ -28,7 +29,7 @@ export const BooksProvider = ({ children }) => {
     // Função para carregar os livros do usuário
     const loadBooks = async () => {
         try {
-            setLoading(true)
+            setLoading(true);
             const fetchedBooks = await getUserBooks();
             if (fetchedBooks) {
                 const transformedBooks = transformBookData(fetchedBooks);
@@ -38,13 +39,33 @@ export const BooksProvider = ({ children }) => {
             console.error('Erro ao carregar livros:', err);
             setError('Erro ao carregar livros. Por favor, verifique sua conexão e tente novamente.');
         } finally {
-            setLoading(false)
+            setLoading(false);
         }
     };
 
     useEffect(() => {
-        loadBooks()
-    }, [])
+        const token = Cookies.get("Authorization");
+        if (token) {
+            loadBooks();
+        } else {
+            setLoading(false);
+        }
+
+        const handleTokenChange = () => {
+            const newToken = Cookies.get("Authorization");
+            if (newToken) {
+                loadBooks();
+            }
+        };
+
+        // Adiciona um listener para mudanças nos cookies
+        window.addEventListener('cookiechange', handleTokenChange);
+
+        // Limpa o listener quando o componente é desmontado
+        return () => {
+            window.removeEventListener('cookiechange', handleTokenChange);
+        };
+    }, []);
 
     // Função para atualizar um livro
     const updateBook = async (updatedBook) => {
@@ -76,7 +97,7 @@ export const BooksProvider = ({ children }) => {
     };
 
     return (
-        <BooksContext.Provider value={{ books, setBooks, loading, error, updateBook, deleteBook }}>
+        <BooksContext.Provider value={{ books, setBooks, loading, error, updateBook, deleteBook, loadBooks }}>
             {children}
         </BooksContext.Provider>
     );

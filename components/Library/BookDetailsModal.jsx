@@ -1,6 +1,19 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 const BookDetailsModal = ({ isOpen, onClose, selectedBook, status, setStatus, startDate, setStartDate, handleAddBook }) => {
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handleAddBookClick = async () => {
+        setIsLoading(true);
+        try {
+            await handleAddBook();
+        } catch (error) {
+            console.error("Erro ao adicionar livro:", error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     if (!isOpen) return null;
 
     return (
@@ -10,23 +23,23 @@ const BookDetailsModal = ({ isOpen, onClose, selectedBook, status, setStatus, st
                 <h3 className="text-xl font-bold mb-2">Detalhes do Livro</h3>
                 <div className="flex flex-col space-y-2">
                     <div>
-                        <label >Título:</label>
+                        <label>Título:</label>
                         <p>{selectedBook.title}</p>
                     </div>
                     <div>
-                        <label >Autor:</label>
+                        <label>Autor:</label>
                         <p>{selectedBook.author}</p>
                     </div>
                     <div>
-                        <label >Categoria:</label>
+                        <label>Categoria:</label>
                         <p>{selectedBook.genre}</p>
                     </div>
                     <div>
-                        <label >Descrição:</label>
-                        <p className=" max-h-32 overflow-y-auto">{selectedBook.description}</p>
+                        <label>Descrição:</label>
+                        <p className="max-h-32 overflow-y-auto">{selectedBook.description}</p>
                     </div>
                     <div>
-                        <label >Status:</label>
+                        <label>Status:</label>
                         <select
                             value={status}
                             onChange={(e) => setStatus(e.target.value)}
@@ -38,7 +51,7 @@ const BookDetailsModal = ({ isOpen, onClose, selectedBook, status, setStatus, st
                         </select>
                     </div>
                     <div>
-                        <label >Data de Início:</label>
+                        <label>Data de Início:</label>
                         <input
                             type="date"
                             value={startDate}
@@ -47,11 +60,12 @@ const BookDetailsModal = ({ isOpen, onClose, selectedBook, status, setStatus, st
                         />
                     </div>
                     <button
-                        onClick={handleAddBook}
+                        onClick={handleAddBookClick}
                         className="p-2 rounded-md mt-4"
                         id="button"
+                        disabled={isLoading}
                     >
-                        Adicionar Livro
+                        {isLoading ? "Adicionando..." : "Adicionar Livro"}
                     </button>
                 </div>
             </div>

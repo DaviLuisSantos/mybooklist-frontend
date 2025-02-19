@@ -1,14 +1,14 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { UserContext } from '../contexts/UserContext';
 import ThemeChange from '../components/ThemeChange';
-import Cookies from 'js-cookie';
+import LogoutButton from './User/LogoutButton';
 
 const Bar = () => {
-    const { user } = useContext(UserContext);
+    const { user, getUserFromCookie } = useContext(UserContext);
     const [username, setUsername] = useState('Usuário');
 
     useEffect(() => {
-        const storedUser = Cookies.get('user');
+        const storedUser = getUserFromCookie();
         if (storedUser) {
             setUsername(storedUser);
         } else if (user) {
@@ -18,10 +18,15 @@ const Bar = () => {
 
     return (
         <div className="w-full p-4 shadow-md z-50 flex items-center justify-between" id='bar'>
-            <h1 className="text-xl font-bold">
-                Lista de leitura de {username}
-            </h1>
-            <ThemeChange />
+            <div className="flex items-center space-x-4">
+                <h1 className="text-xl font-bold">
+                    Lista de leitura de {username}
+                </h1>
+            </div>
+            <div className="flex items-center space-x-4">
+                <ThemeChange />
+                <LogoutButton />
+            </div>
         </div>
     );
 };

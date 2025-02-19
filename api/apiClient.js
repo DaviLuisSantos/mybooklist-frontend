@@ -3,7 +3,7 @@ import Cookies from 'js-cookie';
 
 const apiClient = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_BASE_URL || "https://localhost:7045/api/",
-    timeout: 60000, 
+    timeout: 60000,
     headers: {
         "Content-Type": "application/json",
     },
@@ -11,7 +11,6 @@ const apiClient = axios.create({
 
 apiClient.interceptors.request.use(
     (config) => {
-
         if (typeof window !== 'undefined') {
             const token = Cookies.get("Authorization");
             const key = Cookies.get("key");
@@ -30,17 +29,27 @@ apiClient.interceptors.request.use(
 apiClient.interceptors.response.use(
     (response) => response,
     (error) => {
-       
+        let errorMessage = "Ocorreu um erro ao processar sua solicitação. Por favor, tente novamente mais tarde.";
+
         if (error.response?.status === 401) {
             if (typeof window !== 'undefined' && window.location.pathname !== '/login') {
                 localStorage.removeItem("Authorization");
                 localStorage.removeItem("key");
                 window.location.href = "/login";
             }
+        } else if (error.response?.status === 404) {
+            errorMessage = "Recurso não encontrado.";
+        } else if (error.response?.status === 500) {
+            errorMessage = "Erro interno do servidor.";
         }
+
+        // Exibir a mensagem de erro para o usuário
+        if (typeof window !== 'undefined') {
+            alert(errorMessage);
+        }
+
         return Promise.reject(error);
     }
 );
-
 
 export default apiClient;

@@ -1,6 +1,9 @@
 import { useState, useEffect, useContext } from 'react';
 import { BooksContext } from '../../contexts/UserBookContext';
 import { useTheme } from 'next-themes';
+import { FaTrashAlt } from "react-icons/fa";
+import { BsStopwatch } from "react-icons/bs";
+
 
 const EditBookModal = ({ isOpen, onClose, book }) => {
     const { updateBook, deleteBook } = useContext(BooksContext);
@@ -45,7 +48,7 @@ const EditBookModal = ({ isOpen, onClose, book }) => {
         setIsLoading(true); // Inicia o loading
         try {
             const nextStatus = getNextStatus(status);
-            const today = new Date().toLocaleDateString('en-CA'); // Formato yyyy-mm-dd em GMT local
+            const today = new Date().toLocaleDateString('pt-BR'); // Formato yyyy-mm-dd em GMT local
             setStatus(nextStatus); // Atualiza o status localmente
             const updatedBook = {
                 ...book,
@@ -74,7 +77,7 @@ const EditBookModal = ({ isOpen, onClose, book }) => {
                 author,
                 genre,
                 status,
-                startDate,
+                startDate: status === 'Não Iniciado' ? null : startDate, // Define a data de início como null se o status for "Não Iniciado"
             };
             await updateBook(updatedBook);
             onClose();
@@ -109,10 +112,7 @@ const EditBookModal = ({ isOpen, onClose, book }) => {
 
     // Componente para o Spinner (Loading)
     const LoadingSpinner = () => (
-        <svg className="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24">
-            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-            <circle className="opacity-75" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" strokeDasharray="62.83" strokeDashoffset="0" />
-        </svg>
+        <BsStopwatch />
     );
 
     if (!isOpen) return null;
@@ -120,8 +120,18 @@ const EditBookModal = ({ isOpen, onClose, book }) => {
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4 sm:p-8">
             <div className="rounded-lg p-8 max-w-2xl w-full relative" id="modal">
-                <button className="absolute top-2 right-2 text-2xl cursor-pointer rounded-lg" id='button' onClick={onClose}>×</button>
-                <h2 className="text-2xl font-bold mb-4">Editar Livro</h2>
+                <div className="flex justify-between items-center mb-4">
+                    <button
+                        onClick={handleDelete}
+                        className="p-2 rounded-md bg-red-500 hover:bg-red-700 text-white flex items-center justify-center"
+                        id='delete-button'
+                        disabled={isLoading} // Desabilita o botão durante o loading
+                    >
+                        {isLoading ? <LoadingSpinner /> : <FaTrashAlt />}
+                    </button>
+                    <h2 className="text-2xl font-bold">Editar Livro</h2>
+                    <button className="text-2xl cursor-pointer rounded-lg" id='button' onClick={onClose}>×</button>
+                </div>
                 <div className="flex flex-col space-y-2">
                     <div>
                         <label className="">Título:</label>
@@ -190,14 +200,6 @@ const EditBookModal = ({ isOpen, onClose, book }) => {
                         disabled={isLoading} // Desabilita o botão durante o loading
                     >
                         {isLoading ? <LoadingSpinner /> : "Salvar"}
-                    </button>
-                    <button
-                        onClick={handleDelete}
-                        className="p-2 rounded-md mt-4 bg-red-500 hover:bg-red-700 text-white flex items-center justify-center"
-                        id='delete-button'
-                        disabled={isLoading} // Desabilita o botão durante o loading
-                    >
-                        {isLoading ? <LoadingSpinner /> : "Deletar"}
                     </button>
                 </div>
             </div>

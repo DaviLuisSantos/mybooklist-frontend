@@ -10,7 +10,7 @@ const ThemeChange = () => {
             onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
             className="focus:outline-none"
         >
-            {theme === 'dark' ? <FaSun /> : <FaMoon />}
+            {theme === 'dark' ? <FaSun className="text-2xl" /> : <FaMoon className="text-2xl" />}
         </button>
     );
 };

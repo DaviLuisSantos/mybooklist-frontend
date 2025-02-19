@@ -1,5 +1,5 @@
 import Head from 'next/head';
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import AddBookCard from '../components/Library/AddBookCard';
 import BookSection from '../components/Library/BookSection';
 import withAuth from '../withAuth';
@@ -8,8 +8,14 @@ import { UserContext } from '../contexts/UserContext';
 import Bar from '@/components/Bar';
 
 const Library = () => {
-    const { books, loading, error, setBooks } = useContext(BooksContext);
-    const { user, getUserFromCookie } = useContext(UserContext);
+    const { books, loading, error, setBooks, loadBooks } = useContext(BooksContext);
+    const { user } = useContext(UserContext);
+
+    useEffect(() => {
+        if (books.length === 0 && !loading && !error) {
+            loadBooks();
+        }
+    }, []); // Dependência vazia para garantir que seja executado apenas uma vez
 
     const handleAddBook = (newBook) => {
         newBook.id = books.length ? books[books.length - 1].id + 1 : 1;

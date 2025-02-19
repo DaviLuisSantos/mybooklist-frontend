@@ -3,7 +3,6 @@ import { useRouter } from 'next/router';
 import { UserContext } from '../../contexts/UserContext';
 import CreateAccount from './CreateAccount';
 import ForgotPassword from './ForgotPassword';
-import { createAccount } from '../../api/UserService';
 import LoginForm from './LoginForm';
 import { useGoogleLogin } from '@react-oauth/google';
 import { FcGoogle } from "react-icons/fc";
@@ -11,7 +10,7 @@ import ThemeChange from '../ThemeChange';
 import axios from 'axios';
 
 const Login = () => {
-    const { user, setUser, login } = useContext(UserContext);
+    const { user, setUser, login, loginGoogle } = useContext(UserContext);
     const [currentView, setCurrentView] = useState('login'); // Estado para controlar a visualização atual
     const router = useRouter();
 
@@ -30,11 +29,8 @@ const Login = () => {
                 },
             });
             const userData = response.data;
-            const createResponse = await createAccount(userData.given_name, userData.id, userData.email,);
-            if (createResponse) {
-                await login(userData.given_name, userData.id);
-                router.push('/');
-            }
+            const createResponse = await loginGoogle(userData.given_name, userData.id, userData.email,);
+
         } catch (error) {
             console.error('Failed to fetch user data:', error);
         }
