@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { searchGoogleBooks } from '../../api/googleBook';
-import { searchOpenLibrary, fetchBookDetails } from '../../api/openLibrary';
-import { searchAmazonBooks, fetchBookDetailsFromAmazon } from '../../api/amazonScraper';
 import BookDetailsModal from './BookDetailsModal';
 import { createBook } from '../../api/BookService';
 import { createUserBook } from '../../api/UserBookService';
@@ -17,26 +15,31 @@ const SearchBookModal = ({ isOpen, onClose, onAddBook }) => {
     const [startDate, setStartDate] = useState('');
 
     useEffect(() => {
-        const fetchBooks = async () => {
-            if (!searchTerm) {
+        const delayDebounceFn = setTimeout(() => {
+            if (searchTerm) {
+                fetchBooks();
+            } else {
                 setSearchResults([]);
-                return;
             }
-            setLoading(true);
-            try {
-                let results = await searchGoogleBooks(searchTerm);
-                setSearchResults(results);
-                setError('');
-            } catch (err) {
-                console.error('Error fetching books:', err);
-                setError('Erro ao pesquisar os livros, tente novamente');
-                setSearchResults([]);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchBooks();
+        }, 1000); // Atraso de 500ms
+
+        return () => clearTimeout(delayDebounceFn);
     }, [searchTerm]);
+
+    const fetchBooks = async () => {
+        setLoading(true);
+        try {
+            let results = await searchGoogleBooks(searchTerm);
+            setSearchResults(results);
+            setError('');
+        } catch (err) {
+            console.error('Error fetching books:', err);
+            setError('Erro ao pesquisar os livros, tente novamente');
+            setSearchResults([]);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const handleBookSelect = async (book) => {
         setLoading(true);
@@ -72,12 +75,12 @@ const SearchBookModal = ({ isOpen, onClose, onAddBook }) => {
             const bookDetails = {
                 ...selectedBook,
                 status,
-                startDate: startDate == "" ? null : startDate,
+                startDate: startDate === "" ? null : startDate,
             };
 
             try {
                 const response = await createBook(bookDetails);
-                const response2 = await createUserBook({ bookId: response.data.bookId, status, startDate: startDate == "" ? null : startDate });
+                await createUserBook({ bookId: response.data.bookId, status, startDate: startDate === "" ? null : startDate });
 
                 if (response.status >= 200 && response.status < 300) {
                     onAddBook(bookDetails);

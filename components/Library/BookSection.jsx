@@ -19,7 +19,7 @@ const BookSection = ({ title, books, onSave }) => {
                     </h2>
                     <button
                         onClick={toggleCollapse}
-                        className="flex items-center  hover:text-gray-600 dark:hover:text-gray-300 focus:outline-none transition duration-300 ease-in-out rounded-full p-2"
+                        className="flex items-center hover:text-gray-600 dark:hover:text-gray-300 focus:outline-none transition duration-300 ease-in-out rounded-full p-2"
                     >
                         {isCollapsed ? <FaChevronDown className="ml-2 text-lg" /> : <FaChevronUp className="ml-2 text-lg" />}
                     </button>
@@ -38,6 +38,7 @@ const BookSection = ({ title, books, onSave }) => {
                             description={book.description}
                             status={book.status}
                             startDate={book.startDate}
+                            endDate={book.endDate} // Adiciona endDate às propriedades
                             onSave={onSave}
                         />
                     ))}

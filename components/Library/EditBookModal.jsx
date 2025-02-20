@@ -4,7 +4,6 @@ import { useTheme } from 'next-themes';
 import { FaTrashAlt } from "react-icons/fa";
 import { BsStopwatch } from "react-icons/bs";
 
-
 const EditBookModal = ({ isOpen, onClose, book }) => {
     const { updateBook, deleteBook } = useContext(BooksContext);
     const { theme } = useTheme();
@@ -13,6 +12,7 @@ const EditBookModal = ({ isOpen, onClose, book }) => {
     const [genre, setGenre] = useState('');
     const [status, setStatus] = useState('');
     const [startDate, setStartDate] = useState('');
+    const [endDate, setEndDate] = useState(''); // Novo estado para controlar a data final
     const [isLoading, setIsLoading] = useState(false); // Novo estado para controlar o loading
 
     useEffect(() => {
@@ -21,10 +21,18 @@ const EditBookModal = ({ isOpen, onClose, book }) => {
             setAuthor(book.author);
             setGenre(book.genre);
             setStatus(book.status);
-            if (book.startDate)
-                setStartDate(new Date(book.startDate).toISOString().split('T')[0]);
-            else
-                setStartDate(null)
+            if (book.startDate) {
+                const date = new Date(book.startDate);
+                setStartDate(date.toISOString().split('T')[0]);
+            } else {
+                setStartDate(null);
+            }
+            if (book.endDate) {
+                const date = new Date(book.endDate);
+                setEndDate(date.toISOString().split('T')[0]);
+            } else {
+                setEndDate(null);
+            }
         }
     }, [book]);
 
@@ -43,12 +51,20 @@ const EditBookModal = ({ isOpen, onClose, book }) => {
             default: return 'Livro Completo'; // Para 'Completo' ou outros status
         }
     };
+    const getStatus = () => {
+        if (startDate == null) {
+            return 'Não Iniciado';
+        } else if (startDate != null && endDate == null) {
+            return 'Lendo';
+        }
+        return 'Completo';
+    }
 
     const handleStatusChangeAndSave = async () => {
         setIsLoading(true); // Inicia o loading
         try {
             const nextStatus = getNextStatus(status);
-            const today = new Date().toLocaleDateString('pt-BR'); // Formato yyyy-mm-dd em GMT local
+            const today = new Date().toISOString().split('T')[0]; // Formato yyyy-MM-dd
             setStatus(nextStatus); // Atualiza o status localmente
             const updatedBook = {
                 ...book,
@@ -56,7 +72,8 @@ const EditBookModal = ({ isOpen, onClose, book }) => {
                 author,
                 genre,
                 status: nextStatus, // Usa o novo status
-                startDate: nextStatus === 'Lendo' && status === 'Não Iniciado' ? today : startDate // Define a data de início se o status for "Lendo"
+                startDate: nextStatus === 'Lendo' && status === 'Não Iniciado' ? today : (startDate === '' ? null : startDate), // Define a data de início se o status for "Lendo"
+                endDate: nextStatus === 'Completo' ? today : (endDate === '' ? null : endDate) // Define a data final se o status for "Completo"
             };
             await updateBook(updatedBook); // Salva com o novo status
             onClose();
@@ -76,8 +93,9 @@ const EditBookModal = ({ isOpen, onClose, book }) => {
                 title,
                 author,
                 genre,
-                status,
-                startDate: status === 'Não Iniciado' ? null : startDate, // Define a data de início como null se o status for "Não Iniciado"
+                status: getStatus(), // Usa o status atualizado
+                startDate: startDate == '' ? null : startDate, // Define a data de início como null se estiver vazia
+                endDate: endDate == '' ? null : endDate // Define a data final como null se estiver vazia
             };
             await updateBook(updatedBook);
             onClose();
@@ -182,6 +200,16 @@ const EditBookModal = ({ isOpen, onClose, book }) => {
                             type="date"
                             value={startDate}
                             onChange={(e) => setStartDate(e.target.value)}
+                            className="p-2 rounded-md w-full"
+                            disabled={isLoading} // Desabilita o input durante o loading
+                        />
+                    </div>
+                    <div>
+                        <label>Data Final:</label>
+                        <input
+                            type="date"
+                            value={endDate}
+                            onChange={(e) => setEndDate(e.target.value)}
                             className="p-2 rounded-md w-full"
                             disabled={isLoading} // Desabilita o input durante o loading
                         />

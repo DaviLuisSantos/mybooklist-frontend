@@ -1,5 +1,6 @@
 import axios from "axios";
 import Cookies from 'js-cookie';
+import { isTokenValid, removeToken, setToken, getToken } from '../utils/auth';
 
 const apiClient = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_BASE_URL || "https://localhost:7045/api/",
@@ -12,7 +13,7 @@ const apiClient = axios.create({
 apiClient.interceptors.request.use(
     (config) => {
         if (typeof window !== 'undefined') {
-            const token = Cookies.get("Authorization");
+            const token = getToken();
             const key = Cookies.get("key");
             if (token) {
                 config.headers.Authorization = `Bearer ${token}`;
@@ -31,10 +32,9 @@ apiClient.interceptors.response.use(
     (error) => {
         let errorMessage = "Ocorreu um erro ao processar sua solicitação. Por favor, tente novamente mais tarde.";
 
-        if (error.response?.status === 401) {
-            if (typeof window !== 'undefined' && window.location.pathname !== '/login') {
-                localStorage.removeItem("Authorization");
-                localStorage.removeItem("key");
+        if (error.response?.status == 401) {
+            if (typeof window !== 'undefined' ) {
+                removeToken();
                 window.location.href = "/login";
             }
         } else if (error.response?.status === 404) {

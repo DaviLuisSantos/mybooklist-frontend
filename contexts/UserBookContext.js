@@ -18,6 +18,7 @@ const transformBookData = (fetchedBooks) => {
         isbn: book.book.isbn,
         status: book.status,
         startDate: book.dateStarted,
+        endDate: book.dateFinished
     }));
 };
 

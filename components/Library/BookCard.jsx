@@ -10,6 +10,7 @@ const BookCard = ({
     genre,
     status,
     startDate,
+    endDate, // Adiciona endDate às propriedades
     onSave,
 }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -48,10 +49,10 @@ const BookCard = ({
 
     const formatDate = (dateString) => {
         if (!dateString) {
-            return 'a ler';
+            return '';
         }
         const [year, month, day] = dateString.split('-');
-        return `${day}-${month}-${year}`;
+        return `${day}/${month}/${year}`;
     };
 
     return (
@@ -80,11 +81,11 @@ const BookCard = ({
                 <div className="flex flex-col flex-grow p-4 text-left sm:text-left gap-3 relative md:h-full lg:items-center lg:justify-center">
                     <h2 className="text-lg font-bold md:text-xl lg:text-center" id="book-title">{title}</h2>
                     <h2 className="mt-1 sm:mt-2 md:text-center" id="book-author">{author}</h2>
-                    <div className="flex justify-between w-full mt-2 lg:mt-2 lg:mb-2 sm:justify-between md:justify-between">
-                        <span className="inline-block px-2 py-1 rounded-full text-xs font-medium text-[#939393]" id="date">
-                            {formatDate(startDate)}
+                    <div className="flex flex-col lg:flex-row justify-between w-full mt-2 lg:mt-2 lg:mb-2 sm:justify-between md:justify-between">
+                        <span className="inline-block pr-1 py-1 rounded-full text-xs font-medium text-[#939393] flex-shrink-0 mb-2 lg:mb-0" id="date">
+                            {formatDate(startDate)}{endDate ? ` - ${formatDate(endDate)}` : ''}
                         </span>
-                        <span className="inline-block px-2 py-1 rounded-full text-xs font-medium text-white" id="genre">
+                        <span className="inline-block px-2 py-1 rounded-full text-xs font-medium text-white flex-shrink-0 text-center lg:text-left" id="genre">
                             {genre}
                         </span>
                     </div>
@@ -93,7 +94,7 @@ const BookCard = ({
             <EditBookModal
                 isOpen={isModalOpen}
                 onClose={handleModalClose}
-                book={{ id, title, author, cover, genre, status, startDate }}
+                book={{ id, title, author, cover, genre, status, startDate, endDate }} // Passa endDate para o modal
                 onSave={onSave}
             />
         </>
