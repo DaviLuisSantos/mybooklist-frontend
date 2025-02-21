@@ -20,6 +20,14 @@ const Login = () => {
         }
     }, [user, router]);
 
+    useEffect(() => {
+        const savedView = sessionStorage.getItem('currentView');
+        if (savedView) {
+            setCurrentView(savedView);
+            sessionStorage.removeItem('currentView');
+        }
+    }, []);
+
     const fetchGoogleUserData = async (tokenResponse) => {
         try {
             const { access_token } = tokenResponse;
@@ -44,6 +52,11 @@ const Login = () => {
         onSuccess: fetchGoogleUserData,
         flow: isMobile() ? 'redirect' : 'popup',
     });
+
+    const handleGoogleLogin = () => {
+        sessionStorage.setItem('currentView', currentView);
+        loginG();
+    };
 
     return (
         <div className="min-h-screen flex relative">
@@ -76,7 +89,7 @@ const Login = () => {
                                 <button
                                     className="flex items-center justify-center w-full px-4 py-3 rounded-lg border border-gray-300 hover:bg-gray-100 focus:outline-none text-sm lg:text-base"
                                     id="button"
-                                    onClick={() => loginG()}>
+                                    onClick={handleGoogleLogin}>
                                     <FcGoogle className='text-2xl' />
                                     Or sign in with Google
                                 </button>
