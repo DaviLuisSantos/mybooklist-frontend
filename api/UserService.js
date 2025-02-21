@@ -28,6 +28,17 @@ export const createAccount = async (username, password, email) => {
         throw error;
     }
 };
+export const activateAccount = async (email, token) => {
+    try {
+        const response = await apiClient.post(
+            `${API_ENDPOINT}/activate-account`,
+            { email, token }
+        );
+        return response;
+    } catch (error) {
+        throw error;
+    }
+};
 
 export const loginWithGoogle = async (username, password, email) => {
     try {

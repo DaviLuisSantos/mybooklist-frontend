@@ -13,8 +13,8 @@ const LoginForm = ({ setCurrentView }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await login(username, password);
-            router.push('/');
+            if (await login(username, password))
+                router.push('/');
         } catch (error) {
             console.error('Erro ao fazer login:', error);
         }

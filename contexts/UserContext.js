@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { loginUser, loginWithGoogle, createAccount } from '../api/UserService';
+import { loginUser, loginWithGoogle, createAccount, activateAccount } from '../api/UserService';
 import { isTokenValid, removeToken, setToken, getToken } from '../utils/auth';
 import Cookies from 'js-cookie';
 
@@ -21,12 +21,10 @@ export const UserProvider = ({ children }) => {
                     const token = getToken();
                     if (token) {
                         try {
-                            const token = getToken();
                             const payload = JSON.parse(atob(token.split('.')[1]));
                             setUser(payload.username);
-                        }
-                        catch (error) {
-                            console.log(error)
+                        } catch (error) {
+                            console.log(error);
                         }
                     }
                 }
@@ -55,10 +53,16 @@ export const UserProvider = ({ children }) => {
             setToken(token, id, user);
             setUser(user);
             setError(null);
-            router.push('/');//Redireciona para a página principal
+            alert('Login realizado com sucesso!');
+            return true;
         } catch (error) {
-            console.error('Erro ao fazer login:', error);
-            setError('Erro ao fazer login. Por favor, verifique suas credenciais e tente novamente.');
+            if (error?.status == 401)
+                alert('Usuário ou senha inválidos. Por favor, verifique suas credenciais e tente novamente.');
+            else if (error?.status == 404)
+                alert('Usuário não encontrado. Por favor, verifique suas credenciais e tente novamente.');
+            else
+                setError('Erro ao fazer login. Por favor, verifique suas credenciais e tente novamente.');
+            return false;
         } finally {
             setLoading(false);
         }
@@ -72,20 +76,23 @@ export const UserProvider = ({ children }) => {
             setToken(token, id, user);
             setUser(user);
             setError(null);
-            router.push('/');//Redireciona para a página principal
+            alert('Login realizado com sucesso!');
+            router.push('/'); // Redireciona para a página principal
             return true;
         } catch (error) {
             console.error('Erro ao fazer login:', error);
             setError('Erro ao fazer login. Por favor, verifique suas credenciais e tente novamente.');
+            alert('Erro ao fazer login. Por favor, verifique suas credenciais e tente novamente.');
         } finally {
             setLoading(false);
         }
-    }
+    };
 
     const logout = () => {
         removeToken();
         setUser(null);
-        router.push('/login');//Redireciona para a página de login
+        alert('Logout realizado com sucesso!');
+        router.push('/login'); // Redireciona para a página de login
     };
 
     const createAccountSend = async (username, password, email) => {
@@ -94,24 +101,38 @@ export const UserProvider = ({ children }) => {
         try {
             const response = await createAccount(username, password, email);
             if (response) {
-                setSuccessMessage('Conta criada com sucesso! Verifique seu e-mail e faça login para acessar a sua conta.');
-                setTimeout(() => {
-                    onClose();
-                }, 2000);
-
-                router.push('/login');
+                alert('Conta criada com sucesso! Verifique seu e-mail e faça login para acessar a sua conta.');
+                return response;
             }
-
         } catch (error) {
             console.error('Erro ao criar conta:', error);
             setError('Erro ao criar conta. Por favor, tente novamente.');
+            alert('Erro ao criar conta. Por favor, tente novamente.');
         } finally {
             setLoading(false);
         }
-    }
+    };
+
+    const activateAccountSend = async (email, token) => {
+        setLoading(true);
+        setError('');
+        try {
+            const response = await activateAccount(email, token);
+            if (response) {
+                alert('Conta ativada com sucesso!');
+                return response;
+            }
+        } catch (error) {
+            console.error('Erro ao ativar conta:', error);
+            setError('Erro ao ativar conta. Por favor, tente novamente.');
+            alert('Erro ao ativar conta. Por favor, tente novamente.');
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
-        <UserContext.Provider value={{ user, loading, error, login, loginGoogle, logout, authChecked, getUserFromCookie, createAccountSend }}>
+        <UserContext.Provider value={{ user, loading, error, login, loginGoogle, logout, authChecked, getUserFromCookie, createAccountSend, activateAccountSend }}>
             {children}
         </UserContext.Provider>
     );

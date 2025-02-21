@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import { useRouter } from 'next/router';
 import { UserContext } from '../../contexts/UserContext';
 
@@ -22,11 +22,15 @@ const CreateAccount = ({ onClose }) => {
             const response = await createAccountSend(username, password, email);
             if (response) {
                 setSuccessMessage('Conta criada com sucesso! Verifique seu e-mail e faça login para acessar a sua conta.');
+
+                /*
                 setTimeout(() => {
                     onClose();
                 }, 2000);
 
                 router.push('/login');
+                */
+
             }
 
         } catch (error) {

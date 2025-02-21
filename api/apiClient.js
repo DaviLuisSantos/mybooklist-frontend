@@ -3,7 +3,7 @@ import Cookies from 'js-cookie';
 import { isTokenValid, removeToken, setToken, getToken } from '../utils/auth';
 
 const apiClient = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_API_BASE_URL || "https://localhost:7045/api/",
+    baseURL: process.env.NEXT_PUBLIC_API_BASE_URL || "https://mybooklist-production-b056.up.railway.app/api/",
     timeout: 60000,
     headers: {
         "Content-Type": "application/json",
@@ -33,9 +33,12 @@ apiClient.interceptors.response.use(
         let errorMessage = "Ocorreu um erro ao processar sua solicitação. Por favor, tente novamente mais tarde.";
 
         if (error.response?.status == 401) {
-            if (typeof window !== 'undefined' ) {
-                removeToken();
-                window.location.href = "/login";
+            removeToken();
+            if (typeof window !== 'undefined') {
+                const currentPath = window.location.pathname;
+                if (currentPath !== "/login") {
+                    window.location.href = "/login";
+                }
             }
         } else if (error.response?.status === 404) {
             errorMessage = "Recurso não encontrado.";
@@ -43,10 +46,12 @@ apiClient.interceptors.response.use(
             errorMessage = "Erro interno do servidor.";
         }
 
+        /*
         // Exibir a mensagem de erro para o usuário
         if (typeof window !== 'undefined') {
             alert(errorMessage);
         }
+        */
 
         return Promise.reject(error);
     }

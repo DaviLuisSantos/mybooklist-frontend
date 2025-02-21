@@ -21,7 +21,7 @@ const SearchBookModal = ({ isOpen, onClose, onAddBook }) => {
             } else {
                 setSearchResults([]);
             }
-        }, 1000); // Atraso de 500ms
+        }, 1000); // Atraso de 1000ms
 
         return () => clearTimeout(delayDebounceFn);
     }, [searchTerm]);
@@ -50,7 +50,7 @@ const SearchBookModal = ({ isOpen, onClose, onAddBook }) => {
                 cover: book.volumeInfo.imageLinks?.thumbnail || '/images/no-cover.jpg',
                 genre: book.volumeInfo.categories ? book.volumeInfo.categories[0] : 'Não Categorizado',
                 description: book.volumeInfo.description || 'Sem descrição disponível',
-                pages: book.volumeInfo.pageCount || 'Desconhecido',
+                pages: book.volumeInfo.pageCount || null, // Define pages como null se não for um número válido
                 isbn: book.volumeInfo.industryIdentifiers ? book.volumeInfo.industryIdentifiers[0].identifier : 'Desconhecido',
             };
             setSelectedBook(bookDetails);
@@ -79,8 +79,8 @@ const SearchBookModal = ({ isOpen, onClose, onAddBook }) => {
             };
 
             try {
-                const response = await createBook(bookDetails);
-                await createUserBook({ bookId: response.data.bookId, status, startDate: startDate === "" ? null : startDate });
+                //const response = await createBook(bookDetails);
+                const response = await createUserBook(bookDetails);
 
                 if (response.status >= 200 && response.status < 300) {
                     onAddBook(bookDetails);
