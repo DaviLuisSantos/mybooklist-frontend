@@ -36,8 +36,13 @@ const Login = () => {
         }
     };
 
+    const isMobile = () => {
+        return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    };
+
     const loginG = useGoogleLogin({
         onSuccess: fetchGoogleUserData,
+        flow: isMobile() ? 'redirect' : 'popup',
     });
 
     return (
